@@ -1,14 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#100E0C"/>
-  <path d="M16,10 Q14,6 12,2" stroke="#8C8377" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-  <path d="M16,10 L16,2" stroke="#8C8377" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-  <path d="M16,10 Q18,6 20,2" stroke="#8C8377" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-  <path d="M10,16 Q5,15 1,11" stroke="#B33A2B" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".95"/>
-  <path d="M10,17 Q5,18 1,16" stroke="#B33A2B" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".95"/>
-  <path d="M22,16 Q27,15 31,11" stroke="#EDE8DF" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-  <path d="M22,17 Q27,18 31,16" stroke="#EDE8DF" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-  <path d="M10,16.5 Q16,11 22,16.5 Q16,22 10,16.5 Z" fill="#EDE8DF"/>
-  <path d="M16,13 A3.5,3.5 0 0 0 16,20 Z" fill="#B33A2B"/>
-  <circle cx="16" cy="16.5" r="1.2" fill="#141210"/>
-  <path d="M16,22 L17.2,23.4 L16,24.8 L14.8,23.4 Z" fill="#B33A2B"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Minimal winged-eye favicon: transparent (no box), the red iris is the mark.
+       It blinks on a slow cycle where the browser animates SVG favicons (e.g. Firefox);
+       elsewhere it rests as a clean open eye. -->
+  <!-- crown rays -->
+  <g stroke="#B33A2B" stroke-width="2.4" stroke-linecap="round" opacity="0.55">
+    <path d="M27,17 L25,9"/>
+    <path d="M32,16 L32,7"/>
+    <path d="M37,17 L39,9"/>
+  </g>
+  <!-- eye almond (blinks via d) -->
+  <path fill="#B33A2B">
+    <animate attributeName="d" dur="4.8s" repeatCount="indefinite"
+      keyTimes="0;0.9;0.95;1"
+      values="M10,34 Q32,18 54,34 Q32,50 10,34 Z;
+              M10,34 Q32,18 54,34 Q32,50 10,34 Z;
+              M10,34 Q32,33 54,34 Q32,35 10,34 Z;
+              M10,34 Q32,18 54,34 Q32,50 10,34 Z"/>
+  </path>
+  <!-- pupil (fades as the lid closes) -->
+  <circle cx="32" cy="34" r="6" fill="#FCFBF9">
+    <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite"
+      keyTimes="0;0.9;0.95;1" values="1;1;0;1"/>
+  </circle>
 </svg>

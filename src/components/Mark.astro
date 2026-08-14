@@ -60,15 +60,15 @@ const { size = 260, class: klass = '' } = Astro.props;
   .wings .plume:nth-of-type(3n+2) { --i: 1; }
   .wings .plume:nth-of-type(3n+3) { --i: 2; }
 
-  .ray   { stroke: var(--taupe); stroke-width: 11; stroke-linecap: round; fill: none; }
+  .ray   { stroke: var(--mark-crown); stroke-width: 11; stroke-linecap: round; fill: none; }
   .plume { stroke-width: 15; stroke-linecap: round; fill: none; }
-  .plume--red  { stroke: var(--red); opacity: 0.95; }
-  .plume--bone { stroke: var(--ink); }
+  .plume--red  { stroke: var(--mark-wing-red); opacity: 0.95; }
+  .plume--bone { stroke: var(--mark-wing-bone); }
 
-  .almond  { fill: var(--ink); }
-  .iris    { fill: var(--red); }
-  .pupil   { fill: #141210; }
-  .diamond { fill: var(--red); }
+  .almond  { fill: var(--mark-almond); }
+  .iris    { fill: var(--mark-iris); }
+  .pupil   { fill: var(--mark-pupil); }
+  .diamond { fill: var(--mark-iris); }
 
   /* ── draw-in ───────────────────────────────────────────────────────────── */
   .ray, .plume {
