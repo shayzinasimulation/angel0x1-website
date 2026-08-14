@@ -1,0 +1,144 @@
+---
+/**
+ * The Angel0x1 mark, alive. Same geometry as the app's v1 winged-eye
+ * (logo/explorations/v1-winged-eye.svg) — filled almond, red half-iris, dark pupil,
+ * three taupe crown rays, three plumes a side, the diamond below.
+ *
+ * Motion is pure CSS/SMIL-free: strokes draw themselves in, the eye blinks on a slow
+ * cycle, the iris glances left and right, and each plume flutters on its own phase.
+ * Everything is disabled under prefers-reduced-motion.
+ */
+interface Props { size?: number; class?: string; }
+const { size = 260, class: klass = '' } = Astro.props;
+---
+
+<svg
+  class:list={['mark', klass]}
+  width={size} height={size * 0.44}
+  viewBox="60 300 890 400"
+  role="img" aria-label="The Angel0x1 mark: a winged eye"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- crown rays -->
+  <g class="crown">
+    <path d="M443,388 Q432,359 421,330" class="ray" />
+    <path d="M502,386 L502,318" class="ray" />
+    <path d="M561,388 Q572,359 583,330" class="ray" />
+  </g>
+
+  <!-- wings: red left, bone right; each plume flutters on its own phase -->
+  <g class="wings">
+    <path d="M346,500 Q206.1,487.1 96,400" class="plume plume--red" />
+    <path d="M346,512 Q211.8,521.8 84,480" class="plume plume--red" />
+    <path d="M346,524 Q225.9,546 104,540"  class="plume plume--red" />
+    <path d="M658,500 Q797.9,487.1 908,400" class="plume plume--bone" />
+    <path d="M658,512 Q792.2,521.8 920,480" class="plume plume--bone" />
+    <path d="M658,524 Q778.1,546 900,540"  class="plume plume--bone" />
+  </g>
+
+  <!-- the eye: almond, iris, pupil. The blink scales the almond vertically. -->
+  <g class="eye">
+    <path d="M342,508 Q502,372 662,508 Q502,644 342,508 Z" class="almond" />
+    <g class="gaze">
+      <path d="M502,452 A56,56 0 0 0 502,564 Z" class="iris" />
+      <circle cx="502" cy="508" r="17" class="pupil" />
+    </g>
+  </g>
+
+  <path d="M502,655 L521,674 L502,693 L483,674 Z" class="diamond" />
+</svg>
+
+<style>
+  .mark { display: block; overflow: visible; }
+
+  /* Per-element phase index (was inline style="--i" — moved here so the CSP can
+     keep style-src 'self' with no inline attributes). */
+  .crown .ray:nth-of-type(1) { --i: 0; }
+  .crown .ray:nth-of-type(2) { --i: 1; }
+  .crown .ray:nth-of-type(3) { --i: 2; }
+  .wings .plume:nth-of-type(3n+1) { --i: 0; }
+  .wings .plume:nth-of-type(3n+2) { --i: 1; }
+  .wings .plume:nth-of-type(3n+3) { --i: 2; }
+
+  .ray   { stroke: var(--taupe); stroke-width: 11; stroke-linecap: round; fill: none; }
+  .plume { stroke-width: 15; stroke-linecap: round; fill: none; }
+  .plume--red  { stroke: var(--red); opacity: 0.95; }
+  .plume--bone { stroke: var(--ink); }
+
+  .almond  { fill: var(--ink); }
+  .iris    { fill: var(--red); }
+  .pupil   { fill: #141210; }
+  .diamond { fill: var(--red); }
+
+  /* ── draw-in ───────────────────────────────────────────────────────────── */
+  .ray, .plume {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw 1.5s var(--ease) forwards;
+    animation-delay: calc(var(--i) * 0.11s);
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  .almond, .iris, .pupil, .diamond {
+    opacity: 0;
+    animation: fade 1s var(--ease) 0.85s forwards;
+  }
+  @keyframes fade { to { opacity: 1; } }
+
+  /* ── idle life ─────────────────────────────────────────────────────────── */
+  /* blink: squeeze the whole eye group vertically, fast, once a cycle */
+  .eye {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 6.2s var(--ease) 2.2s infinite;
+  }
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95%           { transform: scaleY(0.06); }
+  }
+
+  /* gaze: roll the iris left and right, with long calm holds at centre */
+  .gaze {
+    animation: gaze 12.5s var(--ease) 2.6s infinite;
+  }
+  @keyframes gaze {
+    0%, 14%   { transform: translateX(0); }
+    22%, 34%  { transform: translateX(38px); }
+    42%, 54%  { transform: translateX(0); }
+    62%, 74%  { transform: translateX(-38px); }
+    82%, 100% { transform: translateX(0); }
+  }
+
+  /* flutter: each plume drifts on its own phase so feathers ripple in sequence */
+  .plume {
+    transform-box: fill-box;
+    transform-origin: center right;
+    animation:
+      draw 1.5s var(--ease) calc(var(--i) * 0.11s) forwards,
+      flutter 4.6s ease-in-out calc(1.5s + var(--i) * 0.36s) infinite;
+  }
+  .plume--bone { transform-origin: center left; }
+  @keyframes flutter {
+    0%, 100% { transform: translateY(0)    rotate(0deg); }
+    50%      { transform: translateY(-3px) rotate(-0.8deg); }
+  }
+
+  .crown .ray {
+    animation:
+      draw 1.5s var(--ease) calc(var(--i) * 0.11s) forwards,
+      breathe 5.4s ease-in-out calc(1.6s + var(--i) * 0.2s) infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-2.5px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ray, .plume, .almond, .iris, .pupil, .diamond, .eye, .gaze, .crown .ray {
+      animation: none !important;
+      stroke-dashoffset: 0 !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

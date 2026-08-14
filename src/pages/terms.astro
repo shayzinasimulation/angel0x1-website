@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Terms — Angel0x1" description="Terms for the Angel0x1 waitlist and early access.">
+  <main class="wrap legal">
+    <a href="/" class="eyebrow back">← Back</a>
+    <h1 class="h2 italic">Terms</h1>
+    <p class="soft">
+      These terms cover this website and the Angel0x1 waitlist while the app is in
+      development. Full app terms will accompany the App Store release.
+    </p>
+
+    <h2 class="h3 italic">Waitlist &amp; early access</h2>
+    <p class="soft">
+      Joining the waitlist places no obligation on you and costs nothing. The
+      first 5&nbsp;000 people to join are eligible for free lifetime access to the
+      app once it launches. "Lifetime" means the lifetime of the product, on the
+      account tied to the email you register. This offer is limited, non-transferable,
+      and may be adjusted if abused (e.g. duplicate or automated signups).
+    </p>
+
+    <h2 class="h3 italic">No warranty yet</h2>
+    <p class="soft">
+      Angel0x1 is pre-release software under active development. Features, timelines,
+      and the roadmap on this site are aspirational and may change.
+    </p>
+
+    <p class="eyebrow faint updated">Last updated {new Date().getFullYear()}</p>
+  </main>
+</Base>
+
+<style>
+  .legal { max-width: 720px; padding-block: 140px 100px; display: flex; flex-direction: column; gap: 20px; }
+  .legal h2 { margin-top: 22px; }
+  .back { display: inline-block; margin-bottom: 10px; }
+  .updated { margin-top: 30px; }
+</style>

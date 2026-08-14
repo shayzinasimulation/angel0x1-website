@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Privacy — Angel0x1" description="How Angel0x1 handles your data: it doesn't leave your device.">
+  <main class="wrap legal">
+    <a href="/" class="eyebrow back">← Back</a>
+    <h1 class="h2 italic">Privacy</h1>
+    <p class="eyebrow faint">The short version</p>
+    <p class="soft">
+      Angel0x1 is built so your writing never leaves your phone. Journal entries,
+      AI reflections, moods, and the picture the app builds of you are encrypted on
+      your device and are never uploaded to any server. There is no account, and
+      there is nothing for us to read, sell, or lose.
+    </p>
+
+    <h2 class="h3 italic">This website</h2>
+    <p class="soft">
+      This site collects no analytics, sets no tracking cookies, and loads no
+      third-party scripts or fonts. The only thing it can collect is the email
+      address you choose to submit to the waitlist.
+    </p>
+
+    <h2 class="h3 italic">The waitlist</h2>
+    <p class="soft">
+      If you join the waitlist, your email address is stored solely to notify you
+      when the app launches and to grant early-access rewards. It is never sold,
+      rented, or shared with third parties, and you can ask us to delete it at any
+      time by replying to any message we send.
+    </p>
+
+    <h2 class="h3 italic">The app</h2>
+    <p class="soft">
+      All AI runs on-device (Apple Foundation Models or downloaded open-weight
+      models). Your entries are sealed with AES-256-GCM using a key held in the
+      device keychain. We operate no backend that can see your content.
+    </p>
+
+    <p class="eyebrow faint updated">Last updated {new Date().getFullYear()}</p>
+  </main>
+</Base>
+
+<style>
+  .legal { max-width: 720px; padding-block: 140px 100px; display: flex; flex-direction: column; gap: 20px; }
+  .legal h2 { margin-top: 22px; }
+  .back { display: inline-block; margin-bottom: 10px; }
+  .updated { margin-top: 30px; }
+</style>

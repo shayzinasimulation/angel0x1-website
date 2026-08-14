@@ -1,0 +1,17 @@
+{
+  "name": "angel0x1-web",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Angel0x1 — marketing site + waitlist. Static-first, on-device-privacy brand.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^5.13.0",
+    "@astrojs/vercel": "^8.2.7"
+  }
+}

@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+interface Props {
+  title?: string;
+  description?: string;
+  og?: string;
+}
+const {
+  title = 'Angel0x1 — The journal that knows you.',
+  description = 'A private, on-device AI journal that builds a picture of who you are — and never tells anyone. Join the waitlist. First 5 000 get free lifetime access.',
+  og = '/og.png',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={og} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- global.css is imported in the frontmatter so Astro emits it as an external,
+         hashed same-origin stylesheet (CSP style-src 'self'); no external fonts or
+         trackers. -->
+  </head>
+  <body>
+    <div class="scrollbar" aria-hidden="true"></div>
+    <slot />
+    <!-- External, same-origin module (public/scripts) so CSP script-src 'self'
+         holds with NO inline script. -->
+    <script type="module" src="/scripts/reveal.js"></script>
+  </body>
+</html>

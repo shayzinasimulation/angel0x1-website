@@ -1,0 +1,443 @@
+---
+import Base from '../layouts/Base.astro';
+import Mark from '../components/Mark.astro';
+---
+<Base>
+  <!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+  <header class="nav-bar">
+    <div class="wrap nav-inner">
+      <a href="/" class="nav-mark" aria-label="Angel0x1 home">
+        <Mark size={100} />
+      </a>
+      <nav>
+        <a href="#about"   class="eyebrow">About</a>
+        <a href="#roadmap" class="eyebrow">Roadmap</a>
+        <a href="#waitlist" class="btn btn--ghost btn--sm">Join waitlist</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+  <section class="section hero" id="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-mark" aria-hidden="true">
+        <Mark size={360} />
+        <div class="hero-halo"></div>
+      </div>
+      <div class="hero-text">
+        <p class="eyebrow" data-reveal>Private journal</p>
+        <h1 class="display italic rd-80" data-reveal>
+          The journal<br/>that knows you.
+        </h1>
+        <p class="hero-sub soft rd-160" data-reveal>
+          All AI. All on-device. Nothing leaves your phone.
+        </p>
+        <div class="hero-cta rd-240" data-reveal>
+          <a href="#waitlist" class="btn">Join the waitlist</a>
+          <span class="eyebrow t-red">First 5 000 get free lifetime access</span>
+        </div>
+      </div>
+    </div>
+    <!-- decorative ascii field -->
+    <pre class="ascii-field" aria-hidden="true">
+· · · · · · · · · · · · · · · · ·
+· · · · · · · · · · · · · · · · ·
+· · · · · · · · · · · · · · · · ·
+· · · · · · · · · · · · · · · · ·</pre>
+  </section>
+
+  <!-- ── ABOUT ─────────────────────────────────────────────────────────────── -->
+  <section class="section about" id="about">
+    <div class="wrap about-inner">
+      <div class="about-copy">
+        <p class="eyebrow" data-reveal>What it is</p>
+        <h2 class="h2 italic rd-60" data-reveal>
+          A witness.<br/>Not a watcher.
+        </h2>
+        <p class="soft rd-120" data-reveal>
+          Angel0x1 is a private iOS journal powered by on-device AI. It reads
+          your words, learns your patterns, tracks your mood, and builds a
+          quietly accurate picture of who you are — entirely on your device,
+          encrypted, never uploaded.
+        </p>
+        <p class="soft rd-180" data-reveal>
+          There is no server holding your pages. There is no model trained on
+          your confessions. The intelligence lives in your pocket, and it is
+          yours alone.
+        </p>
+        <p class="about-tagline italic rd-240" data-reveal>
+          It knows you. It never tells.
+        </p>
+      </div>
+      <div class="about-art rd-100" aria-hidden="true" data-reveal>
+        <div class="art-grid">
+          <!-- original code-art panels — no stock images, no copyright risk -->
+          <div class="art-cell art-cell--eye">
+            <svg viewBox="342 380 320 260" xmlns="http://www.w3.org/2000/svg">
+              <path d="M342,508 Q502,372 662,508 Q502,644 342,508 Z" fill="#EDE8DF" opacity="0.12"/>
+              <path d="M342,508 Q502,372 662,508 Q502,644 342,508 Z"
+                    fill="none" stroke="#8C8377" stroke-width="1.5"/>
+              <path d="M502,452 A56,56 0 0 0 502,564 Z" fill="#B33A2B" opacity="0.8"/>
+              <circle cx="502" cy="508" r="17" fill="#141210"/>
+            </svg>
+          </div>
+          <div class="art-cell art-cell--text">
+            <p class="art-lines">
+              jan 4 · tired but<br/>okay. the kind of<br/>tired that means<br/>something.
+            </p>
+          </div>
+          <div class="art-cell art-cell--graph">
+            <svg viewBox="0 0 100 48" preserveAspectRatio="none">
+              <polyline points="0,38 12,31 24,34 36,22 48,28 60,14 72,19 84,8 100,12"
+                        fill="none" stroke="#B33A2B" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+              <polyline points="0,44 12,42 24,40 36,38 48,37 60,34 72,31 84,27 100,24"
+                        fill="none" stroke="#8C8377" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="3 3"/>
+            </svg>
+          </div>
+          <div class="art-cell art-cell--lock">
+            <svg viewBox="0 0 48 56" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="24" width="32" height="26" rx="5" fill="none" stroke="#EDE8DF" stroke-width="1.5" opacity="0.6"/>
+              <path d="M15,24 L15,16 A9,9 0 0,1 33,16 L33,24" fill="none" stroke="#EDE8DF" stroke-width="1.5" opacity="0.6"/>
+              <circle cx="24" cy="36" r="3" fill="#B33A2B"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROADMAP ───────────────────────────────────────────────────────────── -->
+  <section class="section roadmap" id="roadmap">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Where this goes</p>
+      <h2 class="h2 italic rd-60" data-reveal>
+        A journal today.<br/>Your agent, tomorrow.
+      </h2>
+    </div>
+    <div class="timeline">
+      <!-- Phase 1 -->
+      <div class="phase" data-reveal>
+        <div class="phase-dot"><span></span></div>
+        <div class="phase-body">
+          <p class="eyebrow phase-tag t-red">Now — 2026</p>
+          <h3 class="h3 italic">The journal that listens.</h3>
+          <p class="soft">
+            Private encrypted writing. On-device AI that reflects your words
+            back with one layer more honesty than you brought. Moods tracked.
+            Patterns noticed. All on your phone.
+          </p>
+          <ul class="phase-chips">
+            <li>AES-256 encryption</li>
+            <li>On-device Foundation Models</li>
+            <li>Local MLX open weights</li>
+            <li>Graph of your life</li>
+            <li>Voice journalling</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Phase 2 -->
+      <div class="phase rd-80" data-reveal>
+        <div class="phase-dot"><span></span></div>
+        <div class="phase-body">
+          <p class="eyebrow phase-tag">2027 — Model maturity</p>
+          <h3 class="h3 italic">The companion that knows your patterns.</h3>
+          <p class="soft">
+            As on-device models grow smarter and phones grow more powerful, the
+            journal starts reaching out unprompted — citing a memory, noticing
+            a mood, gently tracking whether you are tending the things you said
+            matter to you.
+          </p>
+          <ul class="phase-chips">
+            <li>Companion notifications</li>
+            <li>Goal check-ins</li>
+            <li>Emotional forecasting</li>
+            <li>Portrait distillation</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Phase 3 -->
+      <div class="phase rd-160" data-reveal>
+        <div class="phase-dot"><span></span></div>
+        <div class="phase-body">
+          <p class="eyebrow phase-tag">2028+ — Agent era</p>
+          <h3 class="h3 italic">Your personal agent. Conscious of you.</h3>
+          <p class="soft">
+            When model efficiency makes real reasoning available on a phone,
+            Angel0x1 becomes something new: a persistent agent that understands
+            your values, remembers everything that happened to you, and can act
+            on your behalf — scheduling, deciding, advising — with the context
+            of everything you have ever written.
+          </p>
+          <p class="soft">
+            Still encrypted. Still on-device. Still silent to everyone but you.
+          </p>
+          <ul class="phase-chips">
+            <li>App Intents &amp; actions</li>
+            <li>Health &amp; circadian sensing</li>
+            <li>Autonomous goal pursuit</li>
+            <li>Lifelong memory graph</li>
+            <li>IQ &amp; EQ that grows with you</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Phase 4 -->
+      <div class="phase phase--future rd-240" data-reveal>
+        <div class="phase-dot"><span></span></div>
+        <div class="phase-body">
+          <p class="eyebrow phase-tag">Eventually</p>
+          <h3 class="h3 italic">An intelligence shaped entirely by your life.</h3>
+          <p class="soft">
+            Not a generic assistant. Not a product trained on everyone else's
+            data. A mind built from your pages, your rhythms, your contradictions
+            — that knows what "doing well" means specifically for you.
+          </p>
+          <p class="soft italic t-faint fs-sm">
+            The only AI that will never sell what it knows about you —<br/>
+            because it never had the chance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WAITLIST ──────────────────────────────────────────────────────────── -->
+  <section class="section waitlist" id="waitlist">
+    <div class="wrap waitlist-inner">
+      <div class="waitlist-art" aria-hidden="true">
+        <Mark size={180} />
+      </div>
+      <div class="waitlist-copy">
+        <p class="eyebrow" data-reveal>Early access</p>
+        <h2 class="h2 italic rd-60" data-reveal>
+          Be there at the start.
+        </h2>
+        <p class="soft rd-120" data-reveal>
+          Angel0x1 is in active development. The first 5&nbsp;000 people on the
+          waitlist get <strong>free lifetime access</strong> to the app — forever,
+          on every future version, no subscription.
+        </p>
+        <p class="eyebrow t-red rd-180" id="counter" data-reveal>
+          <!-- Hydrated by waitlist.js if counter endpoint is live, else static copy -->
+          Limited spots remaining
+        </p>
+
+        <form
+          class="waitlist-form rd-220"
+          id="waitlist-form"
+          data-reveal
+          novalidate
+        >
+          <!-- honeypot: real users never fill this in; bots do -->
+          <input
+            class="vh"
+            type="text"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+          <div class="form-row">
+            <label for="email" class="vh">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+              class="form-input"
+            />
+            <button type="submit" class="btn" id="waitlist-submit">
+              <span class="btn-label">Reserve my spot</span>
+            </button>
+          </div>
+          <p class="form-msg eyebrow" id="form-msg" aria-live="polite"></p>
+          <p class="form-privacy eyebrow">
+            Your email is only used to notify you at launch. No newsletters,
+            no third-party sharing.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────────────────── -->
+  <footer class="footer section">
+    <div class="wrap footer-inner">
+      <Mark size={72} />
+      <p class="eyebrow t-faint">
+        Angel0x1 &copy; {new Date().getFullYear()} — All AI, all on-device.
+      </p>
+      <nav class="footer-links">
+        <a href="/privacy" class="eyebrow">Privacy</a>
+        <a href="/terms"   class="eyebrow">Terms</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/scripts/waitlist.js"></script>
+</Base>
+
+<style>
+/* ── nav ───────────────────────────────────────────────────────────────── */
+.nav-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+  border-bottom: 1px solid var(--line-2);
+  background: rgba(16,14,12,0.82);
+  backdrop-filter: saturate(140%) blur(18px);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-block: 10px;
+}
+.nav-mark { display: flex; align-items: center; }
+nav { display: flex; align-items: center; gap: 28px; }
+.btn--sm { padding: 10px 18px; font-size: 11px; }
+
+/* ── hero ───────────────────────────────────────────────────────────────── */
+.hero { padding-top: clamp(130px, 18vh, 200px); overflow: hidden; }
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: center;
+}
+@media (max-width: 700px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-mark   { order: -1; }
+}
+.hero-mark  { position: relative; display: flex; justify-content: center; }
+.hero-halo  {
+  position: absolute; inset: -60px;
+  background: radial-gradient(ellipse at center, rgba(179,58,43,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-text  { display: flex; flex-direction: column; gap: 24px; }
+.hero-sub   { font-size: clamp(18px,2vw,22px); max-width: 40ch; }
+.hero-cta   { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+.ascii-field {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em;
+  color: var(--line); pointer-events: none; user-select: none;
+  white-space: pre; text-align: center;
+}
+
+/* ── about ───────────────────────────────────────────────────────────────── */
+.about { border-top: 1px solid var(--line-2); }
+.about-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 100px); align-items: start;
+}
+@media (max-width: 800px) { .about-inner { grid-template-columns: 1fr; } }
+.about-copy { display: flex; flex-direction: column; gap: 20px; }
+.about-tagline { font-size: clamp(22px, 3vw, 34px); color: var(--ink); }
+
+/* code-art grid */
+.art-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  padding: 24px; border: 1px solid var(--line-2); border-radius: 10px;
+}
+.art-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-2); border-radius: 7px; overflow: hidden; padding: 16px;
+}
+.art-cell--eye svg  { width: 100%; height: 100%; }
+.art-cell--text { flex-direction: column; align-items: flex-start; padding: 20px; }
+.art-lines {
+  font-family: var(--mono); font-size: 11px; line-height: 1.8;
+  color: var(--faint); white-space: pre-wrap;
+}
+.art-cell--graph svg { width: 100%; height: 100%; }
+.art-cell--lock svg  { width: 48px; height: 56px; }
+
+/* ── roadmap / timeline ──────────────────────────────────────────────────── */
+.roadmap { border-top: 1px solid var(--line-2); }
+.timeline {
+  position: relative;
+  max-width: 780px; margin: clamp(48px, 6vh, 90px) auto 0;
+  padding-inline: var(--gutter);
+  display: flex; flex-direction: column; gap: 0;
+}
+.timeline::before {
+  content: ""; position: absolute;
+  top: 0; bottom: 0; left: calc(var(--gutter) + 12px);
+  width: 1px; background: var(--line);
+}
+.phase {
+  display: grid; grid-template-columns: 40px 1fr; gap: 28px;
+  padding-bottom: clamp(54px, 7vh, 90px);
+  position: relative;
+}
+.phase:last-child { padding-bottom: 0; }
+.phase-dot {
+  display: flex; justify-content: center; padding-top: 7px;
+  position: relative; z-index: 1;
+}
+.phase-dot span {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--bg); border: 1.5px solid var(--red);
+  box-shadow: 0 0 0 4px var(--bg);
+  transition: background 0.4s var(--ease);
+}
+.phase.is-in .phase-dot span { background: var(--red); }
+.phase-body { display: flex; flex-direction: column; gap: 16px; }
+.phase-tag  { margin-bottom: -4px; }
+.phase--future .phase-dot span { border-color: var(--taupe); }
+.phase--future.is-in .phase-dot span { background: var(--taupe); }
+
+.phase-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0;
+}
+.phase-chips li {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--faint);
+  padding: 5px 11px; border: 1px solid var(--line-2); border-radius: 40px;
+}
+
+/* ── waitlist ────────────────────────────────────────────────────────────── */
+.waitlist { border-top: 1px solid var(--line-2); overflow: hidden; position: relative; }
+.waitlist::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 55% at 50% 0%, rgba(179,58,43,0.10) 0%, transparent 75%);
+  pointer-events: none;
+}
+.waitlist-inner {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: clamp(40px, 6vw, 90px); align-items: center;
+}
+@media (max-width: 700px) {
+  .waitlist-inner { grid-template-columns: 1fr; }
+  .waitlist-art   { display: none; }
+}
+.waitlist-copy { display: flex; flex-direction: column; gap: 22px; }
+.waitlist-copy strong { color: var(--ink); font-weight: 500; }
+
+.waitlist-form { display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.form-input {
+  flex: 1 1 240px; min-width: 0;
+  font-family: var(--mono); font-size: 14px;
+  background: var(--bg-2); border: 1px solid var(--line);
+  color: var(--ink); border-radius: 7px; padding: 14px 18px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-input::placeholder { color: var(--faint); }
+.form-input:focus { border-color: var(--ink); }
+.form-input.error { border-color: var(--red); }
+.form-msg     { min-height: 18px; letter-spacing: 0.14em; }
+.form-msg.ok  { color: var(--red); }
+.form-msg.err { color: #e05a4e; }
+.form-privacy { color: var(--faint); margin-top: 4px; }
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.footer { border-top: 1px solid var(--line-2); padding-block: 50px 60px; }
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: var(--faint); transition: color 0.2s; }
+.footer-links a:hover { color: var(--ink); }
+</style>
