@@ -1,5 +1,3 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-
-Sitemap: https://angel0x1.com/sitemap-index.xml

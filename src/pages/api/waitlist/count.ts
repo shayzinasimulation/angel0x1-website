@@ -29,6 +29,16 @@ export const GET: APIRoute = async () => {
     }
   }
 
-  return Response.json({ count, cap });
+  return Response.json(
+    { count, cap },
+    {
+      // Public, non-sensitive aggregate. Cache at the edge so an unauthenticated
+      // caller can't force a Supabase count query on every hit (cost/abuse guard);
+      // browsers always revalidate (max-age=0) but the CDN answers for 60s.
+      headers: {
+        'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+      },
+    },
+  );
 };
 

@@ -11,7 +11,10 @@
     "check": "astro check"
   },
   "dependencies": {
-    "astro": "^5.13.0",
-    "@astrojs/vercel": "^8.2.7"
+    "astro": "^7.2.2",
+    "@astrojs/vercel": "^11.0.5"
+  },
+  "overrides": {
+    "path-to-regexp": "6.3.0"
   }
 }
