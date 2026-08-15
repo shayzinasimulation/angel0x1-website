@@ -1,7 +1,7 @@
-# Angel0x1 — Reserve-Your-Spot Waitlist + Refined Site — Design
+# Angel0x1 — Reserve-Your-Spot Waitlist (Email OTP Verified) + Refined Site — Design
 
 **Date:** 2026-08-16
-**Status:** Approved (pending user review of this doc)
+**Status:** Approved direction; updated with email-OTP verification + folder layout
 **Author:** brainstorming session
 
 ---
@@ -9,15 +9,22 @@
 ## 1. Summary
 
 Evolve the existing Astro + Vercel marketing site into a launch-ready
-"reserve your spot" waitlist with a **live spots-remaining counter**, a
-**persisted email backend**, an **automated confirmation email**, and a
-**refined (not rebuilt) visual design** with smoother scrolling and richer
-motion. Security is a first-class requirement: no SQL injection, no secrets in
-the client, hardened against abuse, reviewed by a dedicated security pass before
-completion.
+**"reserve your spot"** waitlist with:
 
-The brand aesthetic stays: **warm-white / Apple-spacious canvas, red-iris accent,
-the winged-eye mark.** We refine and tighten it — we do not redesign it.
+- **Email OTP verification** — you enter your email, receive a 6-digit code,
+  enter it, and only *then* is your spot reserved. Proves the inbox is real and
+  makes abuse (fake/farmed emails) effectively impossible.
+- a **live spots-remaining counter** ("X of 1,000 left"),
+- a **persisted backend** (Supabase) — emails are actually stored (today they are
+  only logged),
+- an **automated confirmation email** after verification (points to IG / X / Discord;
+  the access code arrives at app launch),
+- a **refined** (not rebuilt) visual design: momentum smooth-scroll + richer motion,
+  same warm-white / red-iris brand.
+
+Security is first-class: **no SQL injection, no secrets in the client, OTP hashed &
+constant-time compared, hardened against abuse,** reviewed by a dedicated parallel
+security pass before completion.
 
 ---
 
@@ -25,25 +32,28 @@ the winged-eye mark.** We refine and tighten it — we do not redesign it.
 
 ### Goals
 - **1,000 free spots**, email only, **no payment**.
+- **Verified email**: OTP (one-time passcode) confirms the inbox before a spot counts.
 - **Live counter**: "X of 1,000 spots left", accurate and abuse-resistant.
-- **Persisted storage** of reservations (currently emails are only logged, never saved).
-- **Abuse resistance**: one reservation per email; one IP cannot farm many emails.
-- **Automated confirmation email**: "your spot is reserved — access code arrives at
-  app launch; until then follow IG / X / Discord".
-- **Refined design**: momentum smooth-scroll, richer scroll-linked motion, refined
-  graphics, fewer/stronger sections — same white brand.
-- **Free hosting + free test URL** today; clean path to the real domain later.
-- **Security**: no SQL injection, no secrets client-side, strict CSP preserved,
-  reviewed by parallel security agents on the real diff.
+- **Persisted storage** of reservations.
+- **Abuse resistance**: one reservation per email; one IP cannot farm many emails;
+  OTP cannot be spammed at a victim; codes cannot be brute-forced.
+- **Automated confirmation email** after verification.
+- **Refined design**: momentum smooth-scroll, richer scroll motion, refined graphics,
+  fewer/stronger sections — same white brand.
+- **Very arranged folders** so the structure is self-explanatory.
+- **Free hosting + free test URL** today; clean path to a real domain later.
+- **Security**: no SQL injection, no client secrets, strict CSP preserved, parallel
+  security review on the real diff.
 
 ### Non-goals (YAGNI)
-- No unique access codes generated now (codes are issued in-app at launch).
+- No unique access codes now (codes issued in-app at launch).
 - No in-app redemption flow.
-- No payments / Stripe / $1 fee (explicitly dropped by user decision).
-- No user accounts, login, or dashboard.
-- No newsletter/marketing automation beyond the single confirmation email.
-- No analytics/trackers (brand is privacy-first; none today, none added).
-- No visual rebrand (dark mode, new palette) — refine current only.
+- No payments / Stripe / $1 fee (dropped by user decision).
+- No user accounts, login, sessions, or dashboard (OTP is single-use, stateless —
+  not a login).
+- No newsletter automation beyond confirmation + OTP emails.
+- No analytics/trackers.
+- No visual rebrand (dark mode / new palette).
 
 ---
 
@@ -52,217 +62,329 @@ the winged-eye mark.** We refine and tighten it — we do not redesign it.
 | Topic | Decision |
 |-------|----------|
 | Model | 1,000 free spots, email only, no payment |
-| Uniqueness | One reservation per email (DB-enforced) |
-| IP abuse | One IP-hash may claim at most **3** emails |
-| Access code | **Not now** — emailed at app launch |
-| Confirmation email | Auto-sent; content points to IG / X / Discord |
-| Storage | Supabase (free Postgres), already scaffolded |
-| Email provider | Resend (free tier, server-side SDK) |
+| Verification | **Email OTP** — 6-digit code, must be entered to reserve |
+| Uniqueness | One reservation per email (DB primary key) |
+| IP abuse | One IP-hash may hold at most **3** verified reservations |
+| Access code | Not now — emailed at app launch |
+| Confirmation email | Auto-sent after verification; points to IG / X / Discord |
+| Storage | Supabase (free Postgres) |
+| Email provider | Resend (free: 100/day, 3k/mo, 1 domain) |
+| Smooth scroll | Lenis 1.3.26, self-hosted (CSP-safe) |
 | Hosting | Vercel free tier |
-| Test URL | `*.vercel.app` (free) now; buy `angel0x1.com` at launch |
-| Visual direction | **Refine current white aesthetic** (+ momentum scroll, richer motion) |
+| Test URL | `*.vercel.app` (free) now |
+| Free domain | See §8 — `.vercel.app` now; buy `angel0x1.com` at launch |
+| Visual direction | Refine current white aesthetic |
+| Dependencies | Keep near-zero: Supabase & Resend via raw `fetch` (no SDKs → smaller supply-chain surface). Only Lenis is vendored. |
 
 ---
 
 ## 4. Architecture
 
-Static-first Astro on Vercel. Marketing pages are prerendered HTML. Only three
-serverless functions render on-demand (`export const prerender = false`), where a
-storage secret can live safely in host env.
+Static-first Astro on Vercel. Marketing pages prerendered. Three on-demand
+serverless functions (`export const prerender = false`) where secrets live in host env.
+
+### Two-step verified flow
 
 ```
-Browser (static HTML + CSP 'self')
-   │  POST /api/waitlist   { email, _hp }
-   ▼
-Vercel serverless function  (secrets in process.env only)
-   ├─ rate-limit (per-IP, in-memory)         [exists]
-   ├─ honeypot check                          [exists]
-   ├─ email validation (server mirror)        [exists]
-   ├─ IP-hash abuse cap (≤3 per IP-hash)      [NEW]
-   ├─ Supabase insert (atomic, unique email)  [NEW: wire real store]
-   └─ Resend confirmation email               [NEW]
-   ▼
-Supabase Postgres  (service-role key, server-only)
-   reservations(email PK, ip_hash, created_at)
+STEP 1 — request code
+  Browser  ──POST /api/reserve/request { email, _hp } ─▶  serverless
+      rate-limit (per-IP + per-email) · honeypot · validate email
+      reject if email already verified · reject if IP already has 3 verified
+      generate 6-digit OTP → store pending(email, code_hash, ip_hash, expires, attempts=0)
+      send OTP email (Resend)
+      return { ok:true }   ← generic; never reveals if email is new/known
 
-GET /api/waitlist/count  →  { reserved, cap:1000 }  (edge-cached 60s)  [exists, retarget]
+STEP 2 — verify code
+  Browser  ──POST /api/reserve/verify { email, code } ─▶  serverless
+      look up pending · check expiry · check attempts<5 · constant-time compare hash
+      on match → RPC reserve_spot(email, ip_hash)  [atomic: re-checks global+IP caps,
+                 inserts into reservations, deletes pending]  → { ok | full | ip_capped }
+      send confirmation email (Resend, non-fatal on failure)
+      return { ok:true, remaining }
+
+COUNTER
+  Browser  ──GET /api/waitlist/count ─▶  { reserved, cap:1000 }   (edge-cached 60s)
 ```
 
 ### Components / units (each independently understandable & testable)
 
-1. **`store` adapter** (`src/pages/api/waitlist.ts`) — persists a reservation.
-   - Input: normalized email, ip_hash. Output: `{ ok, duplicate }`.
-   - Depends on: Supabase REST + service key from `process.env`.
-   - No SQL strings — parameterized REST calls only.
-2. **`ipHash` util** — `SHA-256(ip + IP_HASH_SALT)`, hex. Privacy: raw IP never stored.
-3. **`abuseCap` check** — counts existing rows for this ip_hash; rejects if ≥ cap.
-   - Enforced atomically via a Postgres constraint/RPC to avoid race conditions.
-4. **`sendConfirmation`** (`src/lib/email.ts`, server-only) — Resend call; failure
-   is non-fatal (reservation still succeeds; failure logged).
-5. **`count` endpoint** — returns `{ reserved, cap }`; edge-cached.
-6. **Front-end form + counter** (`public/scripts/waitlist.js`) — retargeted copy
-   ("X of 1,000 spots left"), success state points to socials.
-7. **Motion layer** (`public/scripts/reveal.js` + Lenis) — momentum scroll +
-   scroll-linked reveals, all `prefers-reduced-motion` aware.
+Server-only logic lives in `src/lib/` so routes stay thin:
+
+1. **`src/lib/env.ts`** — typed, runtime (`process.env`) access to secrets. Never
+   `import.meta.env` (Vite would inline it).
+2. **`src/lib/security.ts`** — `validEmail`, `clientIp`, `ipHash` (SHA-256 of
+   `ip+salt`), in-memory rate limiter, `constantTimeEqual`.
+3. **`src/lib/otp.ts`** — `generateCode` (crypto-random 6 digits), `hashCode`
+   (SHA-256 of `code+salt`), `verifyCode` (constant-time).
+4. **`src/lib/store.ts`** — Supabase adapter: `putPending`, `getPending`,
+   `bumpAttempts`, `reserveSpot` (RPC), `countReserved`, `countIpReserved`. All via
+   parameterized REST/RPC — **no SQL strings built in JS**.
+5. **`src/lib/email.ts`** — Resend adapter: `sendOtp`, `sendConfirmation`. Fixed
+   templates; only interpolates the validated email + the numeric code.
+6. **Routes** `src/pages/api/reserve/request.ts`, `verify.ts`, `waitlist/count.ts` —
+   thin orchestration over `lib/`.
+7. **Front-end** `public/scripts/reserve.js` — two-step form (email → code → done),
+   `aria-live` status, all states; retargeted copy.
+8. **Motion** `public/scripts/reveal.js` + `public/scripts/lenis.min.js` — momentum
+   scroll + reveals, `prefers-reduced-motion` aware.
 
 ---
 
 ## 5. Data model
 
 ```sql
+-- Unverified requests. Rows are short-lived (expire) and do NOT consume a spot.
+create table pending_reservations (
+  email      text primary key,
+  code_hash  text        not null,             -- sha256(code + OTP_SALT); never plaintext
+  ip_hash    text        not null,             -- sha256(ip + IP_HASH_SALT); never raw IP
+  attempts   int         not null default 0,   -- verify attempts, cap 5
+  expires_at timestamptz not null,             -- now() + 10 min
+  created_at timestamptz not null default now()
+);
+create index pending_ip_hash_idx on pending_reservations (ip_hash);
+
+-- Verified reservations. These are what count toward the 1,000.
 create table reservations (
   email      text primary key,                 -- one reservation per email
-  ip_hash    text not null,                     -- SHA-256(ip + salt); never the raw IP
+  ip_hash    text        not null,
   created_at timestamptz not null default now()
 );
 create index reservations_ip_hash_idx on reservations (ip_hash);
 ```
 
-- **Cap of 1,000**: enforced in the function by checking `count < cap` before insert,
-  plus the count endpoint drives the UI. (A hard DB guard via RPC is included so a
-  race cannot exceed 1,000.)
-- **IP cap of 3**: `select count(*) where ip_hash = $1` < 3 before insert; wrapped in
-  a single Postgres RPC (transaction) so concurrent requests cannot bypass it.
+### Atomic reserve (why an RPC)
+Global cap + per-IP cap + insert + pending-delete must be atomic, or two concurrent
+verifies both see "999 / 2 IP" and slip past. A single Postgres function does it in
+one transaction:
 
-### Why an RPC (server-side function) for the write
-Two independent checks (global cap, per-IP cap) + insert must be atomic. Doing them
-as separate REST calls invites races (two requests both see 999). A single
-`reserve_spot(email, ip_hash)` Postgres function performs check-and-insert in one
-transaction and returns a typed result: `ok | duplicate | ip_capped | full`.
+```sql
+create or replace function reserve_spot(p_email text, p_ip_hash text)
+returns text                                   -- 'ok' | 'full' | 'ip_capped' | 'duplicate'
+language plpgsql security definer as $$
+declare total int; per_ip int;
+begin
+  select count(*) into total  from reservations;
+  if total >= 1000 then return 'full'; end if;
+  select count(*) into per_ip from reservations where ip_hash = p_ip_hash;
+  if per_ip >= 3 then return 'ip_capped'; end if;
+  insert into reservations(email, ip_hash) values (p_email, p_ip_hash);
+  delete from pending_reservations where email = p_email;
+  return 'ok';
+exception when unique_violation then return 'duplicate';
+end $$;
+```
+
+Counter = `1000 − count(reservations)` (verified only). Pending rows never consume a
+spot; if the list fills between request and verify, verify returns `full` honestly.
 
 ---
 
 ## 6. Security posture (the "bulletproof" requirement)
 
-Existing (keep): strict CSP `default-src 'self'`, HSTS preload, `X-Content-Type-Options`,
+Keep (existing): strict CSP `default-src 'self'`, HSTS preload, `X-Content-Type-Options`,
 locked `Permissions-Policy`, no inline scripts/styles, honeypot, per-IP rate limit,
 server-side validation, no secrets in client bundle.
 
-Added / verified for this work:
+Add / verify:
 
-- **No SQL injection**: no dynamically-built SQL anywhere. All DB access is via
-  Supabase REST (parameterized) or a parameterized RPC. User input is never
-  concatenated into a query.
-- **No secrets client-side**: `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`,
-  `IP_HASH_SALT` read via `process.env` in serverless functions only. Verified in
-  build output (grep the client bundle in CI/manually).
-- **Privacy**: store `ip_hash`, never raw IP. Salt is a server secret.
-- **Abuse resistance**: honeypot + rate limit + unique-email + IP-hash cap + global cap.
-- **CSP for Lenis**: Lenis is self-hosted under `public/scripts/` → still `script-src
-  'self'`, no CSP relaxation, no CDN.
-- **Email safety**: confirmation email is a fixed server-side template; the only
-  interpolated value is the validated email in the "to" field — no user HTML.
-- **Fail closed / fail safe**: DB error → 500, nothing leaked. Email send failure →
-  reservation still recorded, error logged, user still sees success.
-- **Rate-limit hardening**: keep per-IP in-memory limit; note in code that a
-  cross-instance limiter (Upstash) is the upgrade path if abuse appears.
-- **Dedicated security review**: run `/security-review` via **parallel agents**
-  (`dispatching-parallel-agents`) against the actual diff before declaring done.
-  Findings triaged and fixed.
+- **No SQL injection** — zero dynamically-built SQL. Supabase REST + parameterized
+  RPC only; user input is a *parameter*, never concatenated.
+- **No secrets client-side** — `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`,
+  `IP_HASH_SALT`, `OTP_SALT` read via `process.env` in functions only. Verified by
+  grepping the built client bundle.
+- **OTP hardening**:
+  - 6-digit code from a CSPRNG (`crypto.getRandomValues`).
+  - Stored only as `sha256(code + OTP_SALT)` — never plaintext, in DB or logs.
+  - **Constant-time** hash comparison (no early-exit timing leak).
+  - **10-minute expiry**; **max 5 attempts** then the pending row is invalidated.
+  - **Request throttle**: ≤1 code per email per 60s, ≤5/day per email, plus per-IP cap
+    on pending rows → cannot spam a victim's inbox or brute-force.
+  - Generic responses — never reveal whether an email is new, pending, or reserved.
+- **Privacy** — store `ip_hash`, never the raw IP; salt is a server secret.
+- **CSP unchanged** — Lenis self-hosted under `public/scripts/` (`script-src 'self'`);
+  all browser fetches are same-origin (`connect-src 'self'`); Supabase/Resend calls are
+  server→server, not subject to browser CSP.
+- **Email injection safe** — fixed templates; the only interpolated values are the
+  validated email (in `to`) and the numeric code. No user-supplied HTML.
+- **Fail closed / safe** — DB error → 500, nothing leaked. Confirmation-email failure
+  is non-fatal (spot still reserved, logged). OTP-email failure → 500, no pending
+  orphan surfaced to user.
+- **Dedicated security review** — `/security-review` via **parallel agents** on the
+  real diff before "done". Findings triaged + fixed.
 
-### Threat model (abuse scenarios explicitly handled)
+### Threat model
 | Attack | Mitigation |
 |--------|-----------|
-| Same email claims repeatedly | Email is PK → duplicate rejected atomically |
-| One person, many emails, same IP | IP-hash cap (≤3) in atomic RPC |
-| Botnet mass-signup | Honeypot + rate limit + global 1,000 cap; deliverability of confirmation limited |
-| Counter hammering → DB cost/DoS | Count endpoint edge-cached 60s; browsers revalidate |
-| Header spoofing to evade rate limit | Trust platform header (`x-vercel-forwarded-for`), rightmost XFF hop |
+| Fake / farmed emails | **OTP** — must open the inbox; unverified never counts |
+| Same email claims twice | Email is PK → duplicate rejected atomically |
+| One person, many emails, same IP | IP-hash cap (≤3) enforced atomically in RPC |
+| OTP brute force | 6 digits + 5-attempt cap + 10-min expiry + hashed compare |
+| OTP spam / email bombing a victim | Per-email 60s + 5/day throttle; per-IP pending cap |
+| Botnet mass signup | Honeypot + rate limit + OTP + global 1,000 cap |
+| Counter hammering → DB cost/DoS | Count endpoint edge-cached 60s |
+| Header spoof to evade limits | Trust platform header; rightmost XFF hop |
 | Secret leakage | Secrets only in `process.env`; bundle grep in verification |
 | SQL injection | No SQL strings; parameterized REST/RPC only |
-| XSS via email echo | No user input reflected into HTML; strict CSP; email template fixed |
+| Timing attack on code | Constant-time comparison |
+| Enumeration (is email registered?) | Generic responses at both steps |
 
 ---
 
 ## 7. Design refinement (visual)
 
-**Direction: refine the current warm-white aesthetic.** No palette change.
+Refine the current warm-white aesthetic. No palette change.
 
-- **Momentum smooth-scroll**: integrate **Lenis** (~3kb, self-hosted, MIT).
-  `prefers-reduced-motion` disables it (native scroll fallback).
-- **Motion**: keep the existing IntersectionObserver reveals; add gentle
-  scroll-scrubbed parallax on the hero mark and waitlist mark (already have
-  `data-parallax`), tighten easing, stagger section reveals.
-- **Sections (trimmed, stronger)**: Hero → soul line → What it is (triad) →
-  Progression (3 steps) → Privacy → **Reserve (finale, with live counter)** → Footer.
-  Consolidate any redundant copy; more whitespace; larger type rhythm.
-- **Graphics**: refine the winged-eye `Mark` (cleaner draw-in, calmer idle),
-  soften glows, add an optional subtle grain overlay (CSS, cheap).
-- **Reserve section is the climax**: prominent live "X of 1,000 spots left",
-  single email field, "Reserve my spot" CTA; success state shows "You're in —
-  follow us" with IG / X / Discord links.
-- **Copy changes**: "first 5,000 free for life" → **"first 1,000 reserve a free
-  lifetime spot"** across hero, waitlist, meta, and legal pages.
+- **Momentum smooth-scroll** — Lenis (self-hosted), custom `raf` loop, disabled under
+  `prefers-reduced-motion` (native scroll fallback).
+- **Motion** — keep IO reveals; add scroll-scrubbed parallax on the marks, tighter
+  easing, staggered section reveals.
+- **Sections (trimmed, stronger)** — Hero → soul line → What it is → Progression →
+  Privacy → **Reserve (finale, live counter + two-step form)** → Footer. More whitespace.
+- **Graphics** — refine the winged-eye Mark (cleaner draw-in, calmer idle), softer
+  glows, optional cheap CSS grain.
+- **Reserve section** — the climax: live "X of 1,000 spots left"; step 1 email field →
+  step 2 code field (6 boxes or one input) → success "You're in — follow us" with
+  IG / X / Discord.
+- **Copy** — "first 5,000 free for life" → **"first 1,000 reserve a free lifetime
+  spot"** across hero, waitlist, meta, legal.
 
 ### Accessibility
 - All motion gated behind `prefers-reduced-motion`.
-- Form labels, `aria-live` status, focus-visible states preserved.
-- Color contrast unchanged (already AA on white).
+- Labels, `aria-live` status on both steps, focus-visible preserved. AA contrast unchanged.
 
 ---
 
-## 8. Hosting & domain
+## 8. Hosting & the free domain (concrete)
 
-- **Hosting**: Vercel free tier (already targeted by `@astrojs/vercel`).
-- **Free test URL**: `angel0x1.vercel.app` on first deploy — enough to test the
-  counter, form, storage, and email end-to-end.
-- **Domain**: keep code's `site: 'https://angel0x1.com'`. Recommend buying
-  `angel0x1.com` (~$10/yr, Cloudflare/Namecheap) at launch. Avoid free TLDs
-  (`.tk`/`.ml`) — they damage trust and email deliverability for a privacy brand.
-- **Email DNS**: when Resend is enabled, add its SPF/DKIM records to the domain.
+- **Hosting**: Vercel free tier (already targeted).
+- **Free test URL today**: `angel0x1.vercel.app` on first deploy — enough to test
+  counter, OTP, storage, and email end-to-end.
+- **Free real domain options** (pick one when ready):
+  1. **`*.vercel.app`** — free, instant, zero setup. *Recommended for testing.*
+  2. **`angel0x1.js.org`** — free; requires a small PR to the js.org repo (JS projects).
+  3. **`angel0x1.eu.org`** — free; approval can take days.
+  4. Avoid **`.tk/.ml/.ga`** free TLDs — they wreck trust and email deliverability.
+- **Recommended for launch**: buy **`angel0x1.com`** (~$10/yr, Cloudflare/Namecheap).
+  The code already hardcodes `angel0x1.com`, and a real domain is required for good
+  Resend deliverability (SPF/DKIM). Until then, Resend sends from `onboarding@resend.dev`
+  to *your own* inbox for testing.
 
 ---
 
 ## 9. Configuration (env — all server-only)
 
 ```
-WAITLIST_STORE=supabase
+# storage
+WAITLIST_STORE=supabase|none
 SUPABASE_URL=...
 SUPABASE_SERVICE_ROLE_KEY=...        # server-only secret
-WAITLIST_CAP=1000                    # renamed from WAITLIST_LIFETIME_CAP
-IP_HASH_SALT=...                     # server-only secret (random 32+ bytes)
+WAITLIST_CAP=1000
+
+# abuse / crypto
+IP_HASH_SALT=...                     # random 32+ bytes, server-only
+OTP_SALT=...                         # random 32+ bytes, server-only
 IP_CLAIM_CAP=3
+OTP_TTL_MIN=10
+OTP_MAX_ATTEMPTS=5
+
+# email (Resend)
+EMAIL_PROVIDER=resend|none
 RESEND_API_KEY=...                   # server-only secret
-RESEND_FROM="Angel0x1 <hello@angel0x1.com>"
-SOCIAL_IG=...  SOCIAL_X=...  SOCIAL_DISCORD=...   # used in email + footer
+RESEND_FROM="Angel0x1 <onboarding@resend.dev>"   # → hello@angel0x1.com once verified
+
+# socials (used in emails + footer)
+SOCIAL_IG=...  SOCIAL_X=...  SOCIAL_DISCORD=...
 ```
 
-`.env.example` updated to document these (no real values, ever committed).
+### Graceful degradation (runs the instant it's deployed)
+- `WAITLIST_STORE=none`: OTP flow runs in-memory/log mode for UI testing; nothing
+  persisted. (Clearly labeled dev-only.)
+- `EMAIL_PROVIDER=none`: the code is shown in the server log / dev response instead of
+  emailed, so the flow is testable before Resend is connected.
+- Real values flip each subsystem on with no code change.
 
-### Fallback behavior (graceful degradation)
-- `WAITLIST_STORE=none` (default until configured): validate + accept + log, do not
-  persist — site is deployable immediately, counter shows cap.
-- No `RESEND_API_KEY`: skip email send, still record reservation, still show success.
-
----
-
-## 10. Testing
-
-- **Unit**: `validEmail`, `ipHash`, abuse-cap logic, count math (remaining = cap − reserved,
-  floored at 0).
-- **Integration** (against Supabase test project or mock): duplicate email → 409;
-  4th email from same ip_hash → capped; 1000th reservation → full; malformed body → 400.
-- **Security checks**: grep built client bundle for any secret/env leakage; verify CSP
-  headers on deployed preview; attempt header-spoof rate-limit bypass.
-- **Manual E2E on Vercel preview**: reserve a spot, see counter decrement (after cache
-  window), receive confirmation email.
-- **Reduced-motion**: verify Lenis + reveals disabled.
+`.env.example` documents all keys (never real values).
 
 ---
 
-## 11. Rollout
+## 10. Folder layout (arranged so it's self-explanatory)
 
-1. Build refined UI + backend on a feature branch.
-2. Deploy Vercel preview (free URL) with `WAITLIST_STORE=none` → verify UI/motion.
-3. Create Supabase project + table + RPC; set env; redeploy → verify persistence + counter.
-4. Enable Resend + DNS → verify confirmation email.
-5. Run `/security-review` via parallel agents on the diff; fix findings.
-6. Update legal copy (1,000 / no-payment). Point domain when purchased.
+```
+Angel0x1-Website/
+├─ README.md
+├─ SETUP.md                      ← NEW: step-by-step "create & connect the accounts"
+├─ docs/superpowers/specs/2026-08-16-reserve-spot-design.md
+├─ db/                           ← NEW: SQL you paste into Supabase (in order)
+│  ├─ 01_schema.sql
+│  └─ 02_reserve_rpc.sql
+├─ src/
+│  ├─ components/Mark.astro
+│  ├─ layouts/Base.astro
+│  ├─ lib/                       ← NEW: server-only logic (never shipped to browser)
+│  │  ├─ env.ts
+│  │  ├─ security.ts             ← ipHash, rate-limit, validation, constant-time eq
+│  │  ├─ otp.ts                  ← generate / hash / verify code
+│  │  ├─ store.ts                ← Supabase adapter (REST + RPC, parameterized)
+│  │  └─ email.ts                ← Resend adapter (OTP + confirmation)
+│  ├─ pages/
+│  │  ├─ index.astro · privacy.astro · terms.astro
+│  │  └─ api/
+│  │     ├─ reserve/request.ts   ← step 1 (send OTP)
+│  │     ├─ reserve/verify.ts    ← step 2 (verify → reserve)
+│  │     └─ waitlist/count.ts    ← live counter
+│  └─ styles/global.css
+├─ public/
+│  └─ scripts/
+│     ├─ reserve.js              ← NEW: two-step form controller
+│     ├─ reveal.js               ← reveals + parallax
+│     └─ lenis.min.js            ← NEW: vendored smooth-scroll (self-hosted, MIT)
+├─ vercel.json                   ← security headers + CSP
+└─ .env.example                  ← env template (documented; no real values)
+```
 
 ---
 
-## 12. What the user must provide
+## 11. Testing
 
-- **To build & test (free):** nothing — testable on `*.vercel.app`.
-- **To go live:** Supabase project (3 env values), Resend account + domain DNS
-  (for auto-email), IG / X / Discord links, and the domain purchase when ready.
+- **Unit**: `validEmail`, `ipHash`, `generateCode` (range/entropy), `hashCode`,
+  `verifyCode` (constant-time, wrong code fails, expired fails, >5 attempts fails),
+  count math (`remaining = max(0, cap − reserved)`).
+- **Integration** (Supabase test project or mock): request→verify happy path;
+  duplicate email → handled; 4th verified email from one ip_hash → `ip_capped`;
+  1000th → `full`; expired code → rejected; 6th attempt → invalidated; malformed body
+  → 400.
+- **Security checks**: grep built client bundle for any secret/env leak; verify CSP
+  headers on the preview; attempt header-spoof rate-limit bypass; confirm OTP never
+  logged in plaintext.
+- **Manual E2E on Vercel preview**: reserve a spot with a real code, watch counter
+  decrement (after cache window), receive both emails.
+- **Reduced-motion**: Lenis + reveals disabled.
+
+---
+
+## 12. Rollout
+
+1. Build refined UI + OTP backend on a feature branch (graceful-degradation defaults).
+2. Deploy Vercel preview (free URL), `WAITLIST_STORE=none`, `EMAIL_PROVIDER=none` →
+   verify UI, motion, and flow (code shown in dev response).
+3. Create Supabase project; run `db/01_schema.sql` + `db/02_reserve_rpc.sql`; set env;
+   redeploy → verify persistence + counter.
+4. Create Resend account; verify domain (or use `onboarding@resend.dev` to your inbox);
+   set env → verify OTP + confirmation emails.
+5. `/security-review` via parallel agents on the diff; fix findings.
+6. Update legal copy (1,000 / no-payment / OTP). Point `angel0x1.com` when purchased.
+
+---
+
+## 13. What the user must provide
+
+- **To build & test (free):** nothing — testable on `*.vercel.app`, code shown in dev
+  mode before accounts exist.
+- **To go live:**
+  - **Supabase** free project → paste 3 env values (URL, service key) + run the 2 SQL files.
+  - **Resend** free account → API key; a verified domain for sending to arbitrary users
+    (or test to your own inbox first).
+  - **IG / X / Discord** links.
+  - **Domain** (`angel0x1.com`) when ready.
+- I provide `SETUP.md` walking through each, in order.
