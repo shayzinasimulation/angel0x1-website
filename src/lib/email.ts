@@ -2,10 +2,22 @@
 import { flags, config } from './env.ts';
 import { SITE, activeSocials } from '../config/site.ts';
 
-const socialLinks = () =>
-  activeSocials()
-    .map((s) => `<a href="${s.href}" style="color:#B33A2B;text-decoration:none;font-weight:600">${s.label}</a>`)
-    .join('&nbsp;&nbsp;·&nbsp;&nbsp;');
+// Social row for emails: real IG/X brand icons as hosted PNGs (email clients strip
+// SVG, so we use raster images at absolute URLs). Falls back to a text link for any
+// social without an icon (e.g. Discord).
+const ICON_FILE: Record<string, string> = { instagram: 'ig.png', x: 'x.png' };
+function socialLinks(): string {
+  const base = config().siteUrl;
+  return activeSocials()
+    .map((s) => {
+      const icon = ICON_FILE[s.key];
+      if (icon) {
+        return `<a href="${s.href}" style="text-decoration:none;display:inline-block;margin:0 8px;"><img src="${base}/email/${icon}" width="22" height="22" alt="${s.label}" style="display:inline-block;border:0;outline:none;vertical-align:middle;"></a>`;
+      }
+      return `<a href="${s.href}" style="color:#B33A2B;text-decoration:none;font-weight:600;margin:0 8px;">${s.label}</a>`;
+    })
+    .join('');
+}
 
 /**
  * Branded, email-client-safe shell: table layout + inline styles only (no external
