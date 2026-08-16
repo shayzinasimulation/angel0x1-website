@@ -67,6 +67,10 @@ export function config() {
     otpMaxAttempts: intEnv('OTP_MAX_ATTEMPTS', 5),
     supabaseUrl: env('SUPABASE_URL'),
     supabaseKey: env('SUPABASE_SERVICE_ROLE_KEY'),
+    // Public base URL for email assets (the animated logo). Emails need ABSOLUTE
+    // image URLs; SVG doesn't render in most mail clients, so we point at the hosted
+    // GIF. Set SITE_URL=https://angel0x1.com once the domain is attached.
+    siteUrl: env('SITE_URL') ?? 'https://angel0x1-website.vercel.app',
     // Weak defaults exist ONLY for local dev; assertProdConfig() blocks them in prod.
     ipSalt: env('IP_HASH_SALT') ?? DEV_IP_SALT,
     otpSalt: env('OTP_SALT') ?? DEV_OTP_SALT,
