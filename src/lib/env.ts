@@ -49,12 +49,22 @@ export function assertProdConfig(): void {
   if (problems.length) throw new Error(`[config] insecure production configuration: ${problems.join('; ')}`);
 }
 
+/** Parse an int env var, falling back to `def` for unset, empty, OR non-numeric
+ *  values. Guards against NaN (which would serialize to null in JSON and break the
+ *  counter) when a platform exposes an unset var as '' rather than undefined. */
+function intEnv(key: string, def: number): number {
+  const raw = env(key);
+  if (raw == null || raw.trim() === '') return def;
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) ? n : def;
+}
+
 export function config() {
   return {
-    cap: parseInt(env('WAITLIST_CAP') ?? '1000', 10),
-    ipCap: parseInt(env('IP_CLAIM_CAP') ?? '3', 10),
-    otpTtlMs: parseInt(env('OTP_TTL_MIN') ?? '10', 10) * 60_000,
-    otpMaxAttempts: parseInt(env('OTP_MAX_ATTEMPTS') ?? '5', 10),
+    cap: intEnv('WAITLIST_CAP', 1000),
+    ipCap: intEnv('IP_CLAIM_CAP', 3),
+    otpTtlMs: intEnv('OTP_TTL_MIN', 10) * 60_000,
+    otpMaxAttempts: intEnv('OTP_MAX_ATTEMPTS', 5),
     supabaseUrl: env('SUPABASE_URL'),
     supabaseKey: env('SUPABASE_SERVICE_ROLE_KEY'),
     // Weak defaults exist ONLY for local dev; assertProdConfig() blocks them in prod.
