@@ -18,7 +18,7 @@ export function otpText(code: string): string {
 export function confirmationHtml(): string {
   return `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:480px;margin:auto">
   <h2 style="letter-spacing:-.02em">Your spot is reserved 🎉</h2>
-  <p style="color:#6B6560">You're one of the first 1,000. Your free lifetime access code will be emailed to you the moment Angel0x1 launches.</p>
+  <p style="color:#6B6560">You're one of the first 1,000. Your code for 3 months of Angel free will be emailed to you the moment Angel0x1 launches.</p>
   <p style="color:#6B6560">Until then, follow along: ${socialLinks()}</p>
   <p style="color:#9E978E;font-size:13px">All the intelligence, none of the surveillance.</p>
 </div>`;

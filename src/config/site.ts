@@ -13,8 +13,8 @@ export const SITE = {
     reserveEyebrow: 'Early access',
     reserveHeadline: 'Be there at the start.',
     reserveSub:
-      'The first 1,000 to reserve get a free lifetime spot — every version, forever, no subscription.',
-    heroScarcity: 'First 1,000 reserve a free lifetime spot',
+      'The first 1,000 to reserve get 3 months of Angel free — a private place to think, on your device.',
+    heroScarcity: 'First 1,000 get 3 months free',
   },
 } as const;
 

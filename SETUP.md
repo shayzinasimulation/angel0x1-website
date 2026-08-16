@@ -42,8 +42,9 @@ npm run build      # production build
 1. Create a project at <https://supabase.com> (free tier).
 2. In the Supabase dashboard → **SQL Editor**, paste and run **`db/01_schema.sql`**,
    then **`db/02_reserve_rpc.sql`** (in that order). This creates the two tables,
-   turns on Row Level Security, and installs the atomic `reserve_spot` /
-   `bump_attempts` functions.
+   turns on Row Level Security, installs the atomic `reserve_spot` / `bump_attempts`
+   functions, and **revokes public/anon access to those functions** so only your
+   server (service-role key) can call them — abuse resistance by construction.
 3. In Supabase → **Project Settings → API**, copy:
    - **Project URL** → `SUPABASE_URL`
    - **service_role key** (under "Project API keys" — the secret one) →

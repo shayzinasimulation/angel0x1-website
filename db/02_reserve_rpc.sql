@@ -1,8 +1,11 @@
 -- db/02_reserve_rpc.sql — run SECOND in the Supabase SQL editor.
 --
--- reserve_spot() performs the global-cap check, the per-IP-cap check, the insert,
--- and the pending-row cleanup in ONE transaction, so two concurrent verifications
--- cannot both slip past the caps (no race). Returns a typed status string.
+-- reserve_spot() takes a transaction-level advisory lock, then checks the global cap
+-- and the per-IP cap, inserts, and clears the pending row. The advisory lock serializes
+-- all reservations so the cap checks are truly race-free — plain `select count(*)` under
+-- READ COMMITTED does NOT block a concurrent insert, so without the lock two callers could
+-- both read 999 and both insert. Reservation is a rare, low-throughput event, so the lock
+-- has no meaningful cost. Returns a typed status string.
 
 create or replace function reserve_spot(p_email text, p_ip_hash text)
 returns text
@@ -12,6 +15,9 @@ set search_path = public
 as $$
 declare total int; per_ip int;
 begin
+  -- serialize all reservations (single well-known lock key) so cap checks are atomic
+  perform pg_advisory_xact_lock(hashtext('angel0x1_reserve_spot'));
+
   select count(*) into total from reservations;
   if total >= 1000 then return 'full'; end if;
 
@@ -22,6 +28,9 @@ begin
   delete from pending_reservations where email = p_email;
   return 'ok';
 exception when unique_violation then
+  -- already reserved (email PK). Clear any lingering pending row so a used code
+  -- can't be replayed and we don't keep re-sending confirmations.
+  delete from pending_reservations where email = p_email;
   return 'duplicate';
 end $$;
 
@@ -40,3 +49,14 @@ begin
     returning attempts into n;
   return coalesce(n, 0);
 end $$;
+
+-- ── Lock these DEFINER functions down ────────────────────────────────────────
+-- They run as the owner and BYPASS Row Level Security, and PostgREST exposes public-
+-- schema functions at /rest/v1/rpc/<name>. Postgres grants EXECUTE to PUBLIC by default,
+-- so without this REVOKE anyone holding the (public-by-design) anon key could call
+-- reserve_spot directly — supplying their own p_ip_hash — and bypass the OTP flow and the
+-- per-IP cap entirely. The app calls these ONLY with the service-role key, which bypasses
+-- these grants, so revoking has zero functional impact and makes abuse impossible by
+-- construction rather than "safe only while the anon key stays secret".
+revoke execute on function reserve_spot(text, text) from anon, authenticated, public;
+revoke execute on function bump_attempts(text)      from anon, authenticated, public;

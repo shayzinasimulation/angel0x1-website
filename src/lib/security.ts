@@ -2,8 +2,34 @@
 // Server-only security helpers. Globals only (crypto, TextEncoder) so this stays
 // unit-testable under `node --experimental-strip-types` and edge-compatible.
 
+// Strict allowlist: local part is alphanumeric runs joined by single . _ % + - (no
+// leading/trailing/consecutive separators); each domain label is alphanumeric with
+// optional inner hyphens, no leading/trailing/double dots. Rejects injection
+// metacharacters (& = , ( ) ' " < > ; % / \ | space) as defense-in-depth — the primary
+// defense is still context-appropriate encoding at each sink.
+const EMAIL_RE =
+  /^[a-z0-9]+(?:[._%+-][a-z0-9]+)*@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
+
 export function validEmail(s: string): boolean {
-  return typeof s === 'string' && s.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+  return typeof s === 'string' && s.length <= 254 && EMAIL_RE.test(s);
+}
+
+/** Canonicalize an email for uniqueness/dedup so one inbox can't mint many "distinct"
+ *  addresses. Lowercases; for Gmail/Googlemail strips dots and +tags in the local part.
+ *  Returns the canonical form used as the DB key + rate-limit key. Assumes validEmail passed. */
+export function canonicalizeEmail(s: string): string {
+  const lower = s.trim().toLowerCase();
+  const at = lower.lastIndexOf('@');
+  if (at < 1) return lower;
+  let local = lower.slice(0, at);
+  let domain = lower.slice(at + 1);
+  const plus = local.indexOf('+');
+  if (plus !== -1) local = local.slice(0, plus);
+  if (domain === 'gmail.com' || domain === 'googlemail.com') {
+    local = local.replace(/\./g, '');
+    domain = 'gmail.com';
+  }
+  return `${local}@${domain}`;
 }
 
 export async function sha256Hex(input: string): Promise<string> {

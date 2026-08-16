@@ -9,7 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "typecheck": "astro check",
+    "typecheck": "astro build",
     "test": "node --experimental-strip-types --test 'src/lib/**/*.test.ts'"
   },
   "dependencies": {

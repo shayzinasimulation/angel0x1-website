@@ -86,7 +86,10 @@ export async function deletePending(email: string): Promise<void> {
 
 export async function reserveSpot(email: string, ipHash: string): Promise<'ok' | 'full' | 'ip_capped' | 'duplicate'> {
   if (!flags().storeEnabled) {
-    if (mem.reserved.has(email)) return 'duplicate';
+    if (mem.reserved.has(email)) {
+      mem.pending.delete(email); // match SQL: clear pending on duplicate too (no replay / resend)
+      return 'duplicate';
+    }
     if (mem.reserved.size >= mem.cap) return 'full';
     let perIp = 0;
     for (const v of mem.reserved.values()) if (v === ipHash) perIp++;

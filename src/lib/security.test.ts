@@ -2,15 +2,32 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  validEmail, sha256Hex, ipHash, constantTimeEqual, rateLimit, clientIp,
+  validEmail, canonicalizeEmail, sha256Hex, ipHash, constantTimeEqual, rateLimit, clientIp,
 } from './security.ts';
 
-test('validEmail accepts normal, rejects junk and overlong', () => {
+test('validEmail accepts normal, rejects junk, overlong, and injection metacharacters', () => {
   assert.equal(validEmail('a@b.co'), true);
+  assert.equal(validEmail('foo.bar+tag@gmail.com'), true);
   assert.equal(validEmail('no-at'), false);
   assert.equal(validEmail('a@b'), false);
   assert.equal(validEmail('a b@c.co'), false);
   assert.equal(validEmail('x'.repeat(320) + '@b.co'), false);
+  // injection metacharacters must be rejected (defense-in-depth)
+  assert.equal(validEmail('a&or=(x)@b.co'), false);
+  assert.equal(validEmail("x'or'1'='1@b.co"), false);
+  assert.equal(validEmail('a<img>@b.co'), false);
+  assert.equal(validEmail('a,select@b.co'), false);
+  // no leading/trailing/double dots
+  assert.equal(validEmail('.a@b.co'), false);
+  assert.equal(validEmail('a..b@c.co'), false);
+});
+
+test('canonicalizeEmail strips gmail dots and +tags, lowercases', () => {
+  assert.equal(canonicalizeEmail('Foo.Bar+promo@gmail.com'), 'foobar@gmail.com');
+  assert.equal(canonicalizeEmail('f.o.o@googlemail.com'), 'foo@gmail.com');
+  assert.equal(canonicalizeEmail('user+x@fastmail.com'), 'user@fastmail.com'); // +tag stripped, dots kept
+  assert.equal(canonicalizeEmail('a.b@fastmail.com'), 'a.b@fastmail.com');     // non-gmail dots preserved
+  assert.equal(canonicalizeEmail('Plain@Example.COM'), 'plain@example.com');
 });
 
 test('sha256Hex is deterministic, 64 hex chars', async () => {
