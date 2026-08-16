@@ -34,9 +34,11 @@ const {
     <div class="scrollbar" aria-hidden="true"></div>
     <slot />
     <!-- Lenis (self-hosted, CSP script-src 'self') loads first; reveal.js drives its
-         rAF loop. menu.js toggles the mobile overlay. All same-origin, no inline JS. -->
-    <script src="/scripts/lenis.min.js"></script>
-    <script type="module" src="/scripts/reveal.js"></script>
-    <script type="module" src="/scripts/menu.js"></script>
+         rAF loop. menu.js toggles the mobile overlay. `is:inline` keeps Astro from
+         bundling these public/ assets — they stay external same-origin files (no inline
+         JS is emitted), so the strict CSP holds. -->
+    <script is:inline src="/scripts/lenis.min.js"></script>
+    <script is:inline type="module" src="/scripts/reveal.js"></script>
+    <script is:inline type="module" src="/scripts/menu.js"></script>
   </body>
 </html>

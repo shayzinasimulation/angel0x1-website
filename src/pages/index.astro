@@ -1,33 +1,53 @@
 ---
 import Base from '../layouts/Base.astro';
 import Mark from '../components/Mark.astro';
+import { SITE, activeSocials } from '../config/site.ts';
+const socials = activeSocials();
 ---
 <Base>
   <!-- NAV -->
   <header class="nav">
     <div class="wrap nav-in">
-      <a href="/" class="nav-mark" aria-label="Angel0x1 — home"><Mark size={64} /></a>
+      <a href="/" class="nav-mark" aria-label="Angel0x1 — home"><Mark size={52} /></a>
+      <span class="nav-counter eyebrow t-red" data-counter aria-live="polite">Reserve your spot</span>
       <nav class="nav-links">
-        <a href="#vision" class="eyebrow">Vision</a>
-        <a href="#waitlist" class="btn btn--ghost btn--sm">Join waitlist</a>
+        <a href="#reserve" class="btn btn--ghost btn--sm swap"><span>Reserve</span><span aria-hidden="true">Reserve</span></a>
       </nav>
+      <button id="menu-btn" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu-overlay">
+        <span></span><span></span>
+      </button>
     </div>
   </header>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div id="menu-overlay" class="menu-overlay" role="dialog" aria-modal="true" aria-label="Menu">
+    <button class="menu-close eyebrow" data-close aria-label="Close menu">Close ✕</button>
+    <nav class="menu-nav">
+      <a href="#vision">What it is</a>
+      <a href="#reserve">Reserve a spot</a>
+    </nav>
+    <p class="eyebrow t-red menu-counter" data-counter>Reserve your spot</p>
+    {socials.length > 0 && (
+      <div class="menu-socials">
+        {socials.map((s) => <a href={s.href} class="eyebrow" target="_blank" rel="me noopener">{s.label}</a>)}
+      </div>
+    )}
+  </div>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-eye" data-parallax="0.14" aria-hidden="true"><Mark size={300} /></div>
+    <div class="hero-eye" data-parallax="0.14" aria-hidden="true"><Mark size={280} /></div>
     <div class="wrap hero-copy center">
       <p class="eyebrow" data-reveal>A private journal · on-device AI</p>
       <h1 class="display" data-reveal>The journal<br/>that knows you.</h1>
       <p class="lede measure rd-1" data-reveal>
         Write, and it listens — building a quiet, accurate sense of who you are.
-        Every word and every thought stays on your phone.
+        Every word stays on your phone.
       </p>
       <div class="hero-actions rd-2" data-reveal>
-        <a href="#waitlist" class="btn">Join the waitlist</a>
-        <span class="eyebrow t-red">First 5,000 join free for life</span>
+        <a href="#reserve" class="btn">Reserve your spot</a>
+        <span class="eyebrow t-red" data-counter>{SITE.copy.heroScarcity}</span>
       </div>
     </div>
     <div class="hero-scroll eyebrow" aria-hidden="true">Scroll</div>
@@ -59,55 +79,6 @@ import Mark from '../components/Mark.astro';
       </div>
     </div>
   </section>
-  <!-- MARK_A -->
-
-  <!-- PROGRESSION (no dates — a state of becoming, not a calendar) -->
-  <section class="section prog">
-    <div class="wrap">
-      <p class="eyebrow center-block" data-reveal>Where it's going</p>
-      <h2 class="h2 measure center-block" data-reveal>It begins as a journal.<br/>It becomes something that knows you.</h2>
-    </div>
-    <div class="wrap steps">
-      <article class="step" data-reveal="soft">
-        <span class="eyebrow step-k">Now</span>
-        <div class="step-eye" aria-hidden="true">
-          <svg viewBox="0 0 160 92" fill="none">
-            <path d="M20,52 Q80,30 140,52" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
-            <path d="M74,24 L80,14 M86,24 L92,15 M62,26 L66,17" stroke="var(--taupe)" stroke-width="2.4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3 class="h3">A journal.</h3>
-        <p class="soft">You write. It reflects — naming the feeling underneath a half-step deeper than you did.</p>
-      </article>
-
-      <article class="step rd-1" data-reveal="soft">
-        <span class="eyebrow step-k">Next</span>
-        <div class="step-eye" aria-hidden="true">
-          <svg viewBox="0 0 160 92" fill="none">
-            <path d="M20,46 Q80,18 140,46 Q80,66 20,46 Z" fill="var(--ink)"/>
-            <path d="M80,32 A14,14 0 0 0 80,60 Z" fill="var(--red)"/>
-            <circle cx="80" cy="46" r="4.5" fill="var(--paper)"/>
-          </svg>
-        </div>
-        <h3 class="h3">A companion.</h3>
-        <p class="soft">It notices your patterns and reaches out — always citing a real memory, never a script.</p>
-      </article>
-
-      <article class="step rd-2" data-reveal="soft">
-        <span class="eyebrow step-k">Someday</span>
-        <div class="step-eye" aria-hidden="true">
-          <svg viewBox="0 0 160 92" fill="none">
-            <path d="M74,20 Q71,11 68,3 M80,19 L80,2 M86,20 Q89,11 92,3" stroke="var(--taupe)" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M20,46 Q80,10 140,46 Q80,82 20,46 Z" fill="var(--ink)"/>
-            <path d="M80,26 A20,20 0 0 0 80,66 Z" fill="var(--red)"/>
-            <circle cx="80" cy="46" r="6" fill="var(--paper)"/>
-          </svg>
-        </div>
-        <h3 class="h3">An agent.</h3>
-        <p class="soft">As on-device models grow, a mind that understands your life and can act on it — still yours, still silent.</p>
-      </article>
-    </div>
-  </section>
 
   <!-- PRIVACY -->
   <section class="section privacy center">
@@ -120,46 +91,49 @@ import Mark from '../components/Mark.astro';
     </div>
   </section>
 
-  <!-- WAITLIST -->
-  <section class="section waitlist center" id="waitlist">
-    <div class="waitlist-glow" aria-hidden="true"></div>
+  <!-- RESERVE (the highlighted feature) -->
+  <section class="section reserve center" id="reserve">
+    <div class="reserve-glow" aria-hidden="true"></div>
     <div class="wrap center">
-      <div class="waitlist-mark" data-parallax="0.08" aria-hidden="true"><Mark size={128} /></div>
-      <p class="eyebrow" data-reveal>Early access</p>
-      <h2 class="h2 measure" data-reveal>Be there at the start.</h2>
-      <p class="lede measure rd-1" data-reveal>
-        Angel0x1 is in the making. The first 5,000 on the list get free lifetime
-        access — every version, forever, no subscription.
-      </p>
-      <p class="eyebrow t-red rd-2" id="counter" data-reveal>Limited spots remaining</p>
+      <div class="reserve-mark" data-parallax="0.08" aria-hidden="true"><Mark size={112} /></div>
+      <p class="eyebrow" data-reveal>{SITE.copy.reserveEyebrow}</p>
+      <h2 class="h2 measure" data-reveal>{SITE.copy.reserveHeadline}</h2>
+      <p class="lede measure rd-1" data-reveal>{SITE.copy.reserveSub}</p>
+      <p class="reserve-count eyebrow t-red rd-2" data-counter data-reveal aria-live="polite">Reserve your spot</p>
 
-      <form class="wl-form rd-2" id="waitlist-form" data-reveal novalidate>
+      <form class="reserve-form rd-2" id="reserve-form" data-reveal novalidate>
         <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <div class="wl-row">
-          <label for="email" class="vh">Email address</label>
-          <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required class="wl-input" />
-          <button type="submit" class="btn" id="waitlist-submit"><span class="btn-label">Reserve my spot</span></button>
+        <div class="reserve-row">
+          <label for="reserve-email" class="vh">Email address</label>
+          <input id="reserve-email" name="email" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email" required class="reserve-input" />
         </div>
-        <p class="wl-msg eyebrow" id="form-msg" aria-live="polite"></p>
-        <p class="wl-note eyebrow faint">Only used to reach you at launch. No newsletters, no sharing.</p>
+        <div class="reserve-row" id="reserve-code-row" hidden>
+          <label for="reserve-code" class="vh">6-digit code</label>
+          <input id="reserve-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="6-digit code" class="reserve-input" />
+        </div>
+        <button type="submit" class="btn reserve-submit" id="reserve-submit"><span class="btn-label">Reserve your spot</span></button>
+        <p class="reserve-note eyebrow faint">Email only. No newsletters, no sharing. A code confirms it's really you.</p>
       </form>
+      <!-- msg lives OUTSIDE the form: reserve.js clears the form on success, so the
+           success text must be written to an element that survives that clear. -->
+      <p class="reserve-msg eyebrow" id="reserve-msg" aria-live="polite"></p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="foot">
     <div class="wrap foot-in">
-      <a href="/" aria-label="Angel0x1"><Mark size={48} /></a>
+      <a href="/" aria-label="Angel0x1"><Mark size={44} /></a>
       <p class="eyebrow faint">Angel0x1 · all AI, on your device</p>
       <nav class="foot-links">
+        {socials.map((s) => <a href={s.href} class="eyebrow" target="_blank" rel="me noopener">{s.label}</a>)}
         <a href="/privacy" class="eyebrow">Privacy</a>
         <a href="/terms" class="eyebrow">Terms</a>
       </nav>
     </div>
   </footer>
 
-  <script type="module" src="/scripts/waitlist.js"></script>
-  <!-- MARK_B -->
+  <script is:inline type="module" src="/scripts/reserve.js"></script>
 </Base>
 
 <style>
@@ -167,89 +141,112 @@ import Mark from '../components/Mark.astro';
   .nav { position: fixed; inset: 0 0 auto 0; z-index: 90;
     background: rgba(252,251,249,0.72); backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid var(--line-2); }
-  .nav-in { display: flex; align-items: center; justify-content: space-between; padding-block: 8px; }
-  .nav-links { display: flex; align-items: center; gap: 24px; }
-  .nav-links a.eyebrow:hover { color: var(--ink); }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; padding-block: 6px; gap: 12px; }
+  .nav-mark { flex-shrink: 0; }
+  .nav-counter { display: none; }               /* hidden on phone; shown ≥720px */
+  .nav-links { display: none; }
   .btn--sm { padding: 9px 18px; font-size: 13px; }
+
+  .menu-btn { display: inline-flex; flex-direction: column; gap: 5px; background: none;
+    border: 0; padding: 12px; cursor: pointer; min-width: 44px; min-height: 44px;
+    align-items: center; justify-content: center; }
+  .menu-btn span { width: 22px; height: 2px; background: var(--ink); display: block; border-radius: 2px; }
+
+  /* MOBILE MENU OVERLAY */
+  .menu-overlay { position: fixed; inset: 0; z-index: 120; background: var(--paper);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+    opacity: 0; pointer-events: none; transform: translateY(-8px);
+    transition: opacity .4s var(--ease), transform .4s var(--ease); }
+  .menu-overlay.is-open { opacity: 1; pointer-events: auto; transform: none; }
+  .menu-close { position: absolute; top: 22px; right: 22px; background: none; border: 0; cursor: pointer; color: var(--faint); min-height: 44px; }
+  .menu-nav { display: flex; flex-direction: column; gap: 18px; text-align: center; }
+  .menu-nav a { font-size: clamp(28px, 8vw, 44px); font-weight: 600; letter-spacing: -0.03em; }
+  .menu-socials { display: flex; gap: 22px; }
+  .menu-socials a:hover, .menu-nav a:hover { color: var(--red); }
+
+  /* letter-swap micro-interaction (pointer only, motion-safe) */
+  .swap { position: relative; overflow: hidden; }
+  .swap span { display: inline-block; transition: transform .3s var(--ease); }
+  .swap span:nth-child(2) { position: absolute; left: 0; top: 100%; }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .swap:hover span:nth-child(1) { transform: translateY(-100%); }
+    .swap:hover span:nth-child(2) { transform: translateY(-100%); }
+  }
 
   /* HERO */
   .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column;
     align-items: center; justify-content: center; text-align: center;
-    padding: clamp(120px,20vh,200px) var(--gutter) 90px; overflow: hidden; }
+    padding: clamp(110px,18vh,190px) var(--gutter) 84px; overflow: hidden; }
   .hero-glow { position: absolute; width: min(120vw,1100px); aspect-ratio: 1; top: 34%;
     transform: translateY(-50%);
     background: radial-gradient(circle, rgba(179,58,43,0.10) 0%, rgba(179,58,43,0.04) 34%, transparent 62%);
     pointer-events: none; }
-  .hero-eye { margin-bottom: clamp(18px,4vh,44px); filter: drop-shadow(0 24px 44px rgba(26,23,20,0.13)); }
-  .hero-copy { gap: 26px; position: relative; }
-  .hero-actions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
-  .hero-scroll { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+  .hero-eye { margin-bottom: clamp(16px,4vh,40px); filter: drop-shadow(0 24px 44px rgba(26,23,20,0.13)); }
+  .hero-copy { gap: 24px; position: relative; }
+  .hero-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 6px; }
+  .hero-scroll { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
     color: var(--faint); font-size: 10px; animation: bob 2.4s var(--ease) infinite; }
   @keyframes bob { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,6px)} }
   @media (prefers-reduced-motion: reduce){ .hero-scroll{animation:none} }
 
   /* SOUL */
-  .soulwrap { padding-block: clamp(120px,22vh,260px); }
+  .soulwrap { padding-block: clamp(110px,20vh,240px); }
   .soul { color: var(--ink); }
 
   /* ABOUT */
   .about { gap: 22px; }
-  .center-block { margin-inline: auto; text-align: center; }
   .about .h2 { margin-inline: auto; }
-  .triad { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(28px,4vw,64px);
-    margin-top: clamp(44px,7vh,90px); text-align: left; width: 100%; }
-  .tri { display: flex; flex-direction: column; gap: 12px; }
+  .triad { display: grid; grid-template-columns: 1fr; gap: 34px; max-width: 34ch;
+    margin: clamp(40px,6vh,80px) auto 0; text-align: left; width: 100%; }
+  .tri { display: flex; flex-direction: column; gap: 10px; }
   .tri-k { color: var(--red); }
   .tri p { max-width: 34ch; }
-  @media (max-width: 760px){ .triad{ grid-template-columns:1fr; gap:34px; max-width:34ch; margin-inline:auto; } }
-  /* MARK_C */
-
-  /* PROGRESSION */
-  .prog { background: var(--panel); border-block: 1px solid var(--line-2); }
-  .prog .h2 { margin-top: 12px; }
-  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(30px,4vw,72px);
-    margin-top: clamp(56px,8vh,110px); }
-  .step { display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
-    padding-top: 26px; border-top: 1px solid var(--line); }
-  .step-k { color: var(--faint); }
-  .step-eye { width: 100%; max-width: 150px; margin: 6px 0 4px; }
-  .step-eye svg { width: 100%; height: auto; overflow: visible; }
-  .step h3 { letter-spacing: -0.03em; }
-  .step p { color: var(--soft); }
-  @media (max-width: 760px){ .steps{ grid-template-columns:1fr; gap:0; }
-    .step{ padding-block:34px; } .step-eye{ max-width:130px; } }
 
   /* PRIVACY */
-  .privacy { gap: 26px; }
+  .privacy { gap: 24px; }
   .privacy .soul { color: var(--ink); margin-inline: auto; }
   .privacy .lede { margin-inline: auto; margin-top: 6px; }
 
-  /* WAITLIST */
-  .waitlist { position: relative; overflow: hidden; gap: 22px; }
-  .waitlist-glow { position: absolute; inset: 0;
-    background: radial-gradient(ellipse 55% 60% at 50% 30%, rgba(179,58,43,0.08) 0%, transparent 70%);
+  /* RESERVE — the highlighted feature */
+  .reserve { position: relative; overflow: hidden; gap: 18px; }
+  .reserve-glow { position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 28%, rgba(179,58,43,0.09) 0%, transparent 70%);
     pointer-events: none; }
-  .waitlist-mark { margin-bottom: 10px; filter: drop-shadow(0 16px 30px rgba(26,23,20,0.12)); }
-  .waitlist .h2, .waitlist .lede { margin-inline: auto; }
-  .wl-form { width: 100%; max-width: 520px; margin: 22px auto 0; display: flex; flex-direction: column; gap: 14px; }
-  .wl-row { display: flex; gap: 10px; }
-  .wl-input { flex: 1; min-width: 0; font-family: var(--sans); font-size: 16px;
+  .reserve-mark { margin-bottom: 8px; filter: drop-shadow(0 16px 30px rgba(26,23,20,0.12)); }
+  .reserve .h2, .reserve .lede { margin-inline: auto; }
+  .reserve-count { font-size: 13px; }
+  .reserve-form { width: 100%; max-width: 460px; margin: 18px auto 0; display: flex; flex-direction: column; gap: 12px; }
+  .reserve-row { display: flex; }
+  /* the code row starts hidden; ID specificity beats .reserve-row's display:flex
+     (without it the hidden attribute is overridden and the field shows at step 1). */
+  #reserve-code-row[hidden] { display: none; }
+  .reserve-input { flex: 1; min-width: 0; width: 100%; font-family: var(--sans); font-size: 16px; /* ≥16px: no iOS zoom */
     background: var(--panel); border: 1px solid var(--line); color: var(--ink);
-    border-radius: 980px; padding: 15px 22px; transition: border-color 0.25s, box-shadow 0.25s; }
-  .wl-input::placeholder { color: var(--faint); }
-  .wl-input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 4px rgba(26,23,20,0.05); }
-  .wl-input.error { border-color: var(--red); }
-  .wl-msg { min-height: 16px; letter-spacing: 0.16em; }
-  .wl-msg.ok { color: var(--red); } .wl-msg.err { color: #c0392b; }
-  .wl-note { margin-top: 2px; }
-  @media (max-width: 560px){ .wl-row{ flex-direction: column; } .wl-input,.wl-row .btn{ width:100%; justify-content:center; } }
+    border-radius: 16px; padding: 16px 20px; transition: border-color .25s, box-shadow .25s; }
+  .reserve-input::placeholder { color: var(--faint); }
+  #reserve-code { letter-spacing: .35em; text-align: center; font-variant-numeric: tabular-nums; }
+  .reserve-input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 4px rgba(26,23,20,0.05); }
+  .reserve-submit { width: 100%; justify-content: center; min-height: 52px; border-radius: 16px; }
+  .reserve-msg { min-height: 16px; letter-spacing: .14em; margin-top: 14px; }
+  .reserve-msg.ok { color: var(--red); } .reserve-msg.err { color: #c0392b; }
+  .reserve-note { margin-top: 2px; }
 
   /* FOOTER */
-  .foot { border-top: 1px solid var(--line-2); padding: 46px var(--gutter) 60px; }
-  .foot-in { max-width: 1200px; margin-inline: auto; display: flex; align-items: center;
-    justify-content: space-between; flex-wrap: wrap; gap: 20px; }
-  .foot-links { display: flex; gap: 22px; }
+  .foot { border-top: 1px solid var(--line-2); padding: 44px var(--gutter) 56px; }
+  .foot-in { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between; gap: 18px; text-align: center; }
+  .foot-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
   .foot-links a.eyebrow:hover { color: var(--ink); }
+
+  /* ≥720px: inline nav + counter, roomier layout */
+  @media (min-width: 720px) {
+    .nav-in { padding-block: 8px; }
+    .nav-counter { display: inline; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .menu-btn { display: none; }
+    .hero-actions { flex-direction: row; gap: 22px; flex-wrap: wrap; justify-content: center; }
+    .triad { grid-template-columns: repeat(3,1fr); gap: clamp(28px,4vw,64px); max-width: none; }
+    .reserve-form { max-width: 520px; }
+    .foot-in { flex-direction: row; text-align: left; }
+  }
 </style>
-
-

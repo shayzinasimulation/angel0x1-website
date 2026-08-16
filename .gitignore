@@ -14,3 +14,7 @@ dist/
 # os / editor
 .DS_Store
 *.log
+
+# playwright screenshots
+.playwright-mcp/
+*-mobile.png
