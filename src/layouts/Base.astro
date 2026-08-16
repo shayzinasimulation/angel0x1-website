@@ -33,8 +33,10 @@ const {
   <body>
     <div class="scrollbar" aria-hidden="true"></div>
     <slot />
-    <!-- External, same-origin module (public/scripts) so CSP script-src 'self'
-         holds with NO inline script. -->
+    <!-- Lenis (self-hosted, CSP script-src 'self') loads first; reveal.js drives its
+         rAF loop. menu.js toggles the mobile overlay. All same-origin, no inline JS. -->
+    <script src="/scripts/lenis.min.js"></script>
     <script type="module" src="/scripts/reveal.js"></script>
+    <script type="module" src="/scripts/menu.js"></script>
   </body>
 </html>

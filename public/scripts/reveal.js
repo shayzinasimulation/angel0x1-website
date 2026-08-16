@@ -6,10 +6,14 @@
   function init() {
     var bar = document.querySelector('.scrollbar');
     var parallax = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
-    var ticking = false;
+
+    // Momentum scroll (Lenis, self-hosted). Disabled under reduced-motion.
+    var lenis = null;
+    if (!reduce && typeof window.Lenis === 'function') {
+      lenis = new window.Lenis({ lerp: 0.1, wheelMultiplier: 1, smoothWheel: true });
+    }
 
     function frame() {
-      ticking = false;
       var y = window.scrollY;
       if (bar) {
         var total = document.documentElement.scrollHeight - window.innerHeight;
@@ -26,12 +30,15 @@
         }
       }
     }
-    function onScroll() {
-      if (!ticking) { ticking = true; window.requestAnimationFrame(frame); }
+
+    // Single rAF loop drives Lenis + the progress bar + parallax.
+    function raf(time) {
+      if (lenis) lenis.raf(time);
+      frame();
+      window.requestAnimationFrame(raf);
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    frame();
+    window.requestAnimationFrame(raf);
+    window.addEventListener('resize', frame, { passive: true });
 
     // Reveal on enter
     var els = document.querySelectorAll('[data-reveal]');
