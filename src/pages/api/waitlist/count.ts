@@ -1,44 +1,23 @@
 import type { APIRoute } from 'astro';
+import { countReserved } from '../../../lib/store.ts';
+import { config } from '../../../lib/env.ts';
 
 export const prerender = false;
 
-// Runtime env (process.env) — not import.meta.env, which Vite inlines at build.
-const env = (k: string): string | undefined => process.env[k];
-
 export const GET: APIRoute = async () => {
-  const cap = parseInt(env('WAITLIST_LIFETIME_CAP') ?? '5000', 10);
-
-  const adapter = env('WAITLIST_STORE') ?? 'none';
-  let count = 0;
-
-  if (adapter === 'supabase') {
-    const url = env('SUPABASE_URL');
-    const key = env('SUPABASE_SERVICE_ROLE_KEY');
-    if (url && key) {
-      try {
-        const res = await fetch(`${url}/rest/v1/waitlist?select=count`, {
-          headers: {
-            'apikey': key,
-            'Authorization': `Bearer ${key}`,
-            'Prefer': 'count=exact',
-          },
-        });
-        const raw = res.headers.get('content-range');
-        if (raw) count = parseInt(raw.split('/')[1] ?? '0', 10);
-      } catch { /* return 0 */ }
-    }
+  const { cap } = config();
+  let reserved = 0;
+  try {
+    reserved = await countReserved();
+  } catch {
+    /* return 0 on error */
   }
-
   return Response.json(
-    { count, cap },
+    { reserved, cap },
     {
-      // Public, non-sensitive aggregate. Cache at the edge so an unauthenticated
-      // caller can't force a Supabase count query on every hit (cost/abuse guard);
-      // browsers always revalidate (max-age=0) but the CDN answers for 60s.
-      headers: {
-        'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
-      },
+      // Public, non-sensitive aggregate. Edge-cache so an unauthenticated caller can't
+      // force a DB count on every hit (cost/abuse guard); browsers revalidate.
+      headers: { 'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300' },
     },
   );
 };
-
