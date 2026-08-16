@@ -233,7 +233,39 @@ Add / verify:
 
 ## 7. Design refinement (visual)
 
-Refine the current warm-white aesthetic. No palette change.
+Refine the current warm-white aesthetic. No palette change. **Mobile-first and
+very minimal** — the phone experience is the primary target; the desktop layout is
+the enhancement. **The waitlist/reserve flow is the highlighted feature of the whole
+site**, surfaced persistently, not just in one section.
+
+### Inspiration adapted from k95.it (kept on-brand, not copied)
+- **Minimal fixed nav + full-screen hamburger overlay on mobile** — logo left, a single
+  "Reserve" CTA right; on small screens the menu opens a full-screen overlay with large
+  tap targets (links + socials + the live counter).
+- **Big editorial hero** — one strong headline, generous whitespace, a single living
+  graphic (the winged-eye Mark), a "Scroll" cue.
+- **Letter-swap hover micro-interaction** on nav/CTA labels (premium detail); pointer-only,
+  disabled on touch and under `prefers-reduced-motion`.
+- **Persistent live counter** (their footer "12 / 20" motif) → our **"X / 1000 reserved"**,
+  shown in the nav/overlay and the reserve section, so the scarcity is always visible.
+- **Gallery-like restraint** — fewer sections, heavier whitespace, optimized assets, motion
+  used sparingly and purposefully.
+
+### Socials (confirmed handles)
+- **X / Twitter**: `@angel0x1_` → `https://x.com/angel0x1_`
+- **Instagram**: `@angel0x1_` → `https://instagram.com/angel0x1_`
+- **Discord**: link TBD (optional; omitted gracefully if unset).
+- Socials appear in: the footer, the mobile menu overlay, the reserve success state, and
+  both emails. Handles/URLs centralized in one config so they're edited in a single place.
+
+### Mobile-first specifics
+- Base styles target ~360–430px width first; layout scales up with `min-width` queries.
+- Reserve form: single full-width email field → full-width 6-digit code entry
+  (`inputmode="numeric"`, `autocomplete="one-time-code"`, `pattern="[0-9]*"` so iOS/Android
+  surface the numeric keypad and OS autofill of the SMS/email code where supported).
+- All tap targets ≥ 44×44px; sticky bottom "Reserve" affordance on mobile so the primary
+  action is always one thumb-tap away.
+- Momentum scroll (Lenis) tuned for touch; respects reduced-motion.
 
 - **Momentum smooth-scroll** — Lenis (self-hosted), custom `raf` loop, disabled under
   `prefers-reduced-motion` (native scroll fallback).
@@ -293,8 +325,11 @@ EMAIL_PROVIDER=resend|none
 RESEND_API_KEY=...                   # server-only secret
 RESEND_FROM="Angel0x1 <onboarding@resend.dev>"   # → hello@angel0x1.com once verified
 
-# socials (used in emails + footer)
-SOCIAL_IG=...  SOCIAL_X=...  SOCIAL_DISCORD=...
+# socials are PUBLIC, not secret → they live in src/config/site.ts (a shared
+# constant imported by pages + emails), NOT in env. Confirmed handles:
+#   X:  https://x.com/angel0x1_
+#   IG: https://instagram.com/angel0x1_
+#   Discord: optional; omitted from UI if left empty
 ```
 
 ### Graceful degradation (runs the instant it's deployed)
@@ -320,6 +355,8 @@ Angel0x1-Website/
 │  └─ 02_reserve_rpc.sql
 ├─ src/
 │  ├─ components/Mark.astro
+│  ├─ config/
+│  │  └─ site.ts                 ← NEW: public site config (socials, cap, copy) — shared by pages + emails
 │  ├─ layouts/Base.astro
 │  ├─ lib/                       ← NEW: server-only logic (never shipped to browser)
 │  │  ├─ env.ts
