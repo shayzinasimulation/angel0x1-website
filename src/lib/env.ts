@@ -7,12 +7,18 @@ export const env = (k: string): string | undefined => process.env[k];
 const DEV_IP_SALT = 'dev-insecure-ip-salt';
 const DEV_OTP_SALT = 'dev-insecure-otp-salt';
 
+/** True on ANY Vercel deployment (production OR preview). Vercel sets VERCEL=1 on
+ *  every deployment; it is unset when running locally. Used to guarantee the OTP is
+ *  never returned in a response served from a real URL — only on localhost. */
+export function isDeployed(): boolean {
+  return !!env('VERCEL');
+}
+
 /** True on a Vercel production deployment. Used to fail CLOSED: dev-only
- *  conveniences (returning the OTP in the response, weak default salts) must never
- *  activate in production, even if email/salts were left unconfigured.
- *  We key on VERCEL_ENV (authoritative: 'production' only on prod deploys, 'preview'
- *  on previews, unset locally) — NOT NODE_ENV, which `astro build`/`preview` set to
- *  'production' locally and would trip the guard during local testing. */
+ *  conveniences (weak default salts, unconfigured email) must never activate in
+ *  production. We key on VERCEL_ENV (authoritative: 'production' only on prod
+ *  deploys, 'preview' on previews, unset locally) — NOT NODE_ENV, which
+ *  `astro build`/`preview` set to 'production' locally. */
 export function isProd(): boolean {
   return env('VERCEL_ENV') === 'production';
 }
@@ -24,11 +30,12 @@ export function flags() {
   };
 }
 
-/** May the plaintext OTP be returned to the client (dev/preview testing only)?
- *  Only when email is OFF *and* we are not in production. In production this is
- *  always false — the code must be emailed, never handed to the caller. */
+/** May the plaintext OTP be returned to the client? ONLY on a true local dev machine
+ *  (not deployed anywhere) AND when email is off. On any deployed URL — production or
+ *  preview — this is always false, so the code is only ever delivered by email and can
+ *  never be read from the network response. */
 export function devCodeAllowed(): boolean {
-  return !flags().emailEnabled && !isProd();
+  return !isDeployed() && !flags().emailEnabled;
 }
 
 /** Fail closed on a misconfigured production deploy. Called at the top of the
