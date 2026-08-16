@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Mark from '../components/Mark.astro';
+import SocialIcon from '../components/SocialIcon.astro';
 import { SITE, activeSocials } from '../config/site.ts';
 const socials = activeSocials();
 ---
@@ -29,7 +30,11 @@ const socials = activeSocials();
     <p class="eyebrow t-red menu-counter" data-counter>Reserve your spot</p>
     {socials.length > 0 && (
       <div class="menu-socials">
-        {socials.map((s) => <a href={s.href} class="eyebrow" target="_blank" rel="me noopener">{s.label}</a>)}
+        {socials.map((s) => (
+          <a href={s.href} class="social-ic" target="_blank" rel="me noopener" aria-label={s.label}>
+            <SocialIcon name={s.key} size={24} />
+          </a>
+        ))}
       </div>
     )}
   </div>
@@ -126,7 +131,11 @@ const socials = activeSocials();
       <a href="/" aria-label="Angel0x1"><Mark size={44} /></a>
       <p class="eyebrow faint">Angel0x1 · all AI, on your device</p>
       <nav class="foot-links">
-        {socials.map((s) => <a href={s.href} class="eyebrow" target="_blank" rel="me noopener">{s.label}</a>)}
+        {socials.map((s) => (
+          <a href={s.href} class="social-ic" target="_blank" rel="me noopener" aria-label={s.label}>
+            <SocialIcon name={s.key} size={18} />
+          </a>
+        ))}
         <a href="/privacy" class="eyebrow">Privacy</a>
         <a href="/terms" class="eyebrow">Terms</a>
       </nav>
@@ -161,8 +170,13 @@ const socials = activeSocials();
   .menu-close { position: absolute; top: 22px; right: 22px; background: none; border: 0; cursor: pointer; color: var(--faint); min-height: 44px; }
   .menu-nav { display: flex; flex-direction: column; gap: 18px; text-align: center; }
   .menu-nav a { font-size: clamp(28px, 8vw, 44px); font-weight: 600; letter-spacing: -0.03em; }
-  .menu-socials { display: flex; gap: 22px; }
-  .menu-socials a:hover, .menu-nav a:hover { color: var(--red); }
+  .menu-socials { display: flex; gap: 26px; }
+  .menu-nav a:hover { color: var(--red); }
+  /* social icon buttons — real IG/X/Discord glyphs, inherit currentColor */
+  .social-ic { display: inline-flex; align-items: center; justify-content: center;
+    color: var(--faint); min-width: 44px; min-height: 44px; transition: color .25s var(--ease), transform .25s var(--ease); }
+  .social-ic:hover { color: var(--red); transform: translateY(-2px); }
+  .foot-links .social-ic { min-width: 0; min-height: 0; padding: 6px; }
 
   /* letter-swap micro-interaction (pointer only, motion-safe) */
   .swap { position: relative; overflow: hidden; }

@@ -28,7 +28,8 @@
 
   --measure: 58ch;
   --gutter: clamp(22px, 6vw, 64px);
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);   /* long, expensive-feeling ease-out */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);        /* long, expensive-feeling ease-out */
+  --ease-cine: cubic-bezier(0.19, 1, 0.22, 1);  /* deeper, more cinematic settle */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -98,34 +99,41 @@ a { color: inherit; text-decoration: none; }
 ::selection { background: var(--red); color: #fff; }
 /* GLOBAL_3 */
 
-/* Motion — smooth reveals, set by src? no: public/scripts/reveal.js via IO. */
+/* Motion — cinematic reveals driven by public/scripts/reveal.js via IntersectionObserver.
+   Elements rise, scale up from 98%, and un-blur into place on a long, weighted ease. */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 1s var(--ease), transform 1.1s var(--ease);
+  transform: translate3d(0, 40px, 0) scale(0.985);
+  filter: blur(6px);
+  transition:
+    opacity 1.1s var(--ease-cine),
+    transform 1.2s var(--ease-cine),
+    filter 1.1s var(--ease-cine);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
-[data-reveal].is-in { opacity: 1; transform: none; }
+[data-reveal].is-in { opacity: 1; transform: none; filter: none; }
 
-/* A gentler variant for large blocks (less travel, longer fade) */
-[data-reveal="soft"] { transform: translateY(18px); }
+/* A gentler variant for large blocks (less travel, no blur — keeps big type crisp) */
+[data-reveal="soft"] { transform: translate3d(0, 22px, 0); filter: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
 }
 
 /* Hairline progress line at the very top */
 .scrollbar {
   position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-  background: var(--red); z-index: 200; transition: width 0.12s linear;
+  background: var(--red); z-index: 200;
 }
 
-/* reveal-delay utilities (no inline styles → CSP style-src 'self') */
-.rd-1 { --reveal-delay: 90ms; }
-.rd-2 { --reveal-delay: 180ms; }
-.rd-3 { --reveal-delay: 270ms; }
-.rd-4 { --reveal-delay: 360ms; }
+/* reveal-delay utilities (no inline styles → CSP style-src 'self'). Longer, more
+   cinematic stagger than before so sequences cascade rather than pop together. */
+.rd-1 { --reveal-delay: 120ms; }
+.rd-2 { --reveal-delay: 240ms; }
+.rd-3 { --reveal-delay: 360ms; }
+.rd-4 { --reveal-delay: 480ms; }
+.rd-5 { --reveal-delay: 600ms; }
 .t-red   { color: var(--red); }
 .t-faint { color: var(--faint); }
 

@@ -18,11 +18,13 @@ export const SITE = {
   },
 } as const;
 
-export function activeSocials(): { label: string; href: string }[] {
+export type SocialKey = 'instagram' | 'x' | 'discord';
+
+export function activeSocials(): { key: SocialKey; label: string; href: string }[] {
   const s = SITE.socials;
   return [
-    { label: 'Instagram', href: s.instagram },
-    { label: 'X', href: s.x },
-    { label: 'Discord', href: s.discord },
+    { key: 'instagram', label: 'Instagram', href: s.instagram },
+    { key: 'x', label: 'X', href: s.x },
+    { key: 'discord', label: 'Discord', href: s.discord },
   ].filter((x) => x.href.length > 0);
 }
