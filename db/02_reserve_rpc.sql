@@ -19,9 +19,13 @@ begin
   perform pg_advisory_xact_lock(hashtext('angel0x1_reserve_spot'));
 
   select count(*) into total from reservations;
+  -- NOTE: 1000 = the global waitlist cap. This is the AUTHORITATIVE enforcement; it must be
+  -- kept in sync with WAITLIST_CAP in the app env (src/lib/env.ts, used for the pre-check +
+  -- counter). Changing the env var alone does NOT change this — edit both, or parameterize.
   if total >= 1000 then return 'full'; end if;
 
   select count(*) into per_ip from reservations where ip_hash = p_ip_hash;
+  -- 3 = per-IP cap; must match IP_CLAIM_CAP in src/lib/env.ts (same sync caveat as above).
   if per_ip >= 3 then return 'ip_capped'; end if;
 
   insert into reservations(email, ip_hash) values (p_email, p_ip_hash);
