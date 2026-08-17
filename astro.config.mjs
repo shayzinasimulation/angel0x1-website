@@ -9,7 +9,7 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   output: 'static',
   adapter: vercel(),
-  site: 'https://angel0x1.com',
+  site: 'https://angel0x1.fun',
   build: { inlineStylesheets: 'never' }, // external CSS → CSP can forbid inline scripts/styles cleanly
   devToolbar: { enabled: false },
 });

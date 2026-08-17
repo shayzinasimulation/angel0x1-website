@@ -2,7 +2,7 @@
 // PUBLIC site config — safe to ship to the browser. Secrets never go here.
 export const SITE = {
   name: 'Angel0x1',
-  domain: 'https://angel0x1.com',
+  domain: 'https://angel0x1.fun',
   cap: 1000,
   socials: {
     x: 'https://x.com/angel0x1_',

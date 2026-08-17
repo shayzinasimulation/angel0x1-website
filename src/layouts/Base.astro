@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SITE, activeSocials } from '../config/site.ts';
 interface Props {
   title?: string;
   description?: string;
@@ -10,22 +11,67 @@ const {
   description = 'A private, on-device AI journal that builds a picture of who you are — and never tells anyone. Reserve your spot: the first 1,000 get 3 months free.',
   og = '/og.png',
 } = Astro.props;
+
+// Absolute URLs (link unfurlers + canonical require them). Astro.site = angel0x1.fun.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(og, Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE.domain}/#org`,
+      name: SITE.name,
+      url: SITE.domain,
+      logo: ogImage,
+      sameAs: activeSocials().map((s) => s.href),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.domain}/#site`,
+      name: SITE.name,
+      url: SITE.domain,
+      publisher: { '@id': `${SITE.domain}/#org` },
+    },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#FCFBF9" />
+
+    <!-- Open Graph (absolute URLs; 1200×630 card) -->
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={og} />
-    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Angel0x1 — the journal that knows you." />
+
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <title>{title}</title>
+    <meta name="twitter:site" content="@angel0x1_" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" type="image/gif" href="/favicon.gif" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <!-- global.css is imported in the frontmatter so Astro emits it as an external,
          hashed same-origin stylesheet (CSP style-src 'self'); no external fonts or
          trackers. -->
