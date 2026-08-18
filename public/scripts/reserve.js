@@ -16,8 +16,8 @@
     var els = document.querySelectorAll('[data-counter]');
     for (var i = 0; i < els.length; i++) {
       els[i].textContent = remaining > 0
-        ? remaining.toLocaleString() + ' of ' + cap.toLocaleString() + ' spots left'
-        : 'All ' + cap.toLocaleString() + ' spots reserved — general list soon';
+        ? remaining.toLocaleString() + ' / ' + cap.toLocaleString() + ' left'
+        : 'All ' + cap.toLocaleString() + ' reserved';
     }
   }
   fetch('/api/waitlist/count')
@@ -49,7 +49,7 @@
     show("You're in. Your launch code arrives when we ship — follow along below.", 'ok');
     if (typeof remaining === 'number') {
       var els = document.querySelectorAll('[data-counter]');
-      for (var i = 0; i < els.length; i++) els[i].textContent = remaining.toLocaleString() + ' spots left';
+      for (var i = 0; i < els.length; i++) els[i].textContent = remaining.toLocaleString() + ' / 1,000 left';
     }
   }
 

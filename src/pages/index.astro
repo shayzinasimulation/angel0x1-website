@@ -5,262 +5,183 @@ import SocialIcon from '../components/SocialIcon.astro';
 import { SITE, activeSocials } from '../config/site.ts';
 const socials = activeSocials();
 ---
-<Base>
-  <!-- NAV -->
-  <header class="nav">
-    <div class="wrap nav-in">
-      <a href="/" class="nav-mark" aria-label="Angel0x1 — home"><Mark size={52} /></a>
-      <span class="nav-counter eyebrow t-red" data-counter aria-live="polite">Reserve your spot</span>
-      <nav class="nav-links">
-        <a href="#reserve" class="btn btn--ghost btn--sm swap"><span>Reserve</span><span aria-hidden="true">Reserve</span></a>
-      </nav>
-      <button id="menu-btn" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu-overlay">
-        <span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- MOBILE MENU OVERLAY -->
-  <div id="menu-overlay" class="menu-overlay" role="dialog" aria-modal="true" aria-label="Menu">
-    <button class="menu-close eyebrow" data-close aria-label="Close menu">Close ✕</button>
-    <nav class="menu-nav">
-      <a href="#vision">What it is</a>
-      <a href="#reserve">Reserve a spot</a>
-    </nav>
-    <p class="eyebrow t-red menu-counter" data-counter>Reserve your spot</p>
-    {socials.length > 0 && (
-      <div class="menu-socials">
+<Base bodyClass="home">
+  <main class="stage" data-load>
+    <!-- TOP ROW -->
+    <header class="hd">
+      <a href="/" class="wordmark swap" aria-label="Angel0x1 — home" data-cursor>
+        <span>ANGEL0X1</span><span aria-hidden="true">ANGEL0X1</span>
+      </a>
+      <div class="hd-right">
+        <span class="meta hd-tag">On-device AI</span>
         {socials.map((s) => (
-          <a href={s.href} class="social-ic" target="_blank" rel="me noopener" aria-label={s.label}>
-            <SocialIcon name={s.key} size={24} />
+          <a href={s.href} class="ic" target="_blank" rel="me noopener" aria-label={s.label} data-cursor>
+            <SocialIcon name={s.key} size={19} />
           </a>
         ))}
       </div>
-    )}
-  </div>
+    </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-eye" data-parallax="0.14" aria-hidden="true"><Mark size={280} /></div>
-    <div class="wrap hero-copy center">
-      <p class="eyebrow" data-reveal>A private journal · on-device AI</p>
-      <h1 class="display" data-reveal>The journal<br/>that knows you.</h1>
-      <p class="lede measure rd-1" data-reveal>
-        Write, and it listens — building a quiet, accurate sense of who you are.
-        Every word stays on your phone.
-      </p>
-      <div class="hero-actions rd-2" data-reveal>
-        <a href="#reserve" class="btn">Reserve your spot</a>
-        <span class="eyebrow t-red" data-counter>{SITE.copy.heroScarcity}</span>
-      </div>
-    </div>
-    <div class="hero-scroll eyebrow" aria-hidden="true">Scroll</div>
-  </section>
+    <!-- CORE -->
+    <section class="core">
+      <div class="eye" data-eye aria-hidden="true"><Mark size={210} /></div>
+      <h1 class="display" data-r="1">The journal<br/>that knows you.</h1>
+      <p class="lede" data-r="2">Write. It listens, and reflects you back — on your device, never anywhere else.</p>
 
-  <!-- SOUL LINE -->
-  <section class="section soulwrap center">
-    <p class="soul h2" data-reveal>It knows you.<br/>It never tells.</p>
-  </section>
-
-  <!-- WHAT IT IS -->
-  <section class="section" id="vision">
-    <div class="wrap about center">
-      <p class="eyebrow" data-reveal>What it is</p>
-      <h2 class="h2 measure" data-reveal>An intelligence that lives in your pocket — and answers only to you.</h2>
-      <div class="triad">
-        <div class="tri" data-reveal>
-          <span class="tri-k eyebrow">Reads</span>
-          <p class="soft">It takes in what you write and reflects it back one honest layer deeper.</p>
-        </div>
-        <div class="tri rd-1" data-reveal>
-          <span class="tri-k eyebrow">Remembers</span>
-          <p class="soft">It keeps the thread of your moods, patterns, and the things you said matter.</p>
-        </div>
-        <div class="tri rd-2" data-reveal>
-          <span class="tri-k eyebrow">Reflects</span>
-          <p class="soft">No servers, no training on your pages. The model runs on your device alone.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRIVACY -->
-  <section class="section privacy center">
-    <div class="wrap center">
-      <p class="soul h2 measure" data-reveal>All the intelligence.<br/>None of the surveillance.</p>
-      <p class="lede measure rd-1" data-reveal>
-        There is no account, no cloud, no company reading your pages. It is the only AI
-        that will never sell what it knows about you — because it never had the chance.
-      </p>
-    </div>
-  </section>
-
-  <!-- RESERVE (the highlighted feature) -->
-  <section class="section reserve center" id="reserve">
-    <div class="reserve-glow" aria-hidden="true"></div>
-    <div class="wrap center">
-      <div class="reserve-mark" data-parallax="0.08" aria-hidden="true"><Mark size={112} /></div>
-      <p class="eyebrow" data-reveal>{SITE.copy.reserveEyebrow}</p>
-      <h2 class="h2 measure" data-reveal>{SITE.copy.reserveHeadline}</h2>
-      <p class="lede measure rd-1" data-reveal>{SITE.copy.reserveSub}</p>
-      <p class="reserve-count eyebrow t-red rd-2" data-counter data-reveal aria-live="polite">Reserve your spot</p>
-
-      <form class="reserve-form rd-2" id="reserve-form" data-reveal novalidate>
+      <form class="rz" id="reserve-form" data-r="3" novalidate>
         <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <div class="reserve-row">
+        <div class="rz-row">
           <label for="reserve-email" class="vh">Email address</label>
-          <input id="reserve-email" name="email" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email" required class="reserve-input" />
+          <input id="reserve-email" name="email" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email" required class="rz-input" data-cursor />
+          <button type="submit" class="rz-btn" id="reserve-submit" data-cursor>
+            <span class="btn-label">Reserve</span>
+          </button>
         </div>
-        <div class="reserve-row" id="reserve-code-row" hidden>
+        <div class="rz-row rz-coderow" id="reserve-code-row" hidden>
           <label for="reserve-code" class="vh">6-digit code</label>
-          <input id="reserve-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="6-digit code" class="reserve-input" />
+          <input id="reserve-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="6-digit code" class="rz-input" data-cursor />
         </div>
-        <button type="submit" class="btn reserve-submit" id="reserve-submit"><span class="btn-label">Reserve your spot</span></button>
-        <p class="reserve-note eyebrow faint">Email only. No newsletters, no sharing. A code confirms it's really you.</p>
+        <p class="rz-note">Email only. A one-time code confirms it's really you.</p>
       </form>
-      <!-- msg lives OUTSIDE the form: reserve.js clears the form on success, so the
-           success text must be written to an element that survives that clear. -->
-      <p class="reserve-msg eyebrow" id="reserve-msg" aria-live="polite"></p>
-    </div>
-  </section>
+      <p class="rz-msg" id="reserve-msg" aria-live="polite"></p>
+    </section>
 
-  <!-- FOOTER -->
-  <footer class="foot">
-    <div class="wrap foot-in">
-      <a href="/" aria-label="Angel0x1"><Mark size={44} /></a>
-      <p class="eyebrow faint">Angel0x1 · all AI, on your device</p>
-      <nav class="foot-links">
-        {socials.map((s) => (
-          <a href={s.href} class="social-ic" target="_blank" rel="me noopener" aria-label={s.label}>
-            <SocialIcon name={s.key} size={18} />
-          </a>
-        ))}
-        <a href="/privacy" class="eyebrow">Privacy</a>
-        <a href="/terms" class="eyebrow">Terms</a>
+    <!-- BOTTOM ROW -->
+    <footer class="ft">
+      <span class="meta ft-tag">Private journal · never tells</span>
+      <span class="count" data-counter data-r="4">— / {SITE.cap.toLocaleString()}</span>
+      <nav class="ft-links">
+        <a href="/privacy" class="meta swap" data-cursor><span>Privacy</span><span aria-hidden="true">Privacy</span></a>
+        <a href="/terms" class="meta swap" data-cursor><span>Terms</span><span aria-hidden="true">Terms</span></a>
       </nav>
-    </div>
-  </footer>
+    </footer>
+  </main>
 
   <script is:inline type="module" src="/scripts/reserve.js"></script>
 </Base>
 
+<!-- STYLE_MARK -->
 <style>
-  /* NAV */
-  .nav { position: fixed; inset: 0 0 auto 0; z-index: 90;
-    background: rgba(252,251,249,0.72); backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid var(--line-2); }
-  .nav-in { display: flex; align-items: center; justify-content: space-between; padding-block: 6px; gap: 12px; }
-  .nav-mark { flex-shrink: 0; }
-  .nav-counter { display: none; }               /* hidden on phone; shown ≥720px */
-  .nav-links { display: none; }
-  .btn--sm { padding: 9px 18px; font-size: 13px; }
-
-  .menu-btn { display: inline-flex; flex-direction: column; gap: 5px; background: none;
-    border: 0; padding: 12px; cursor: pointer; min-width: 44px; min-height: 44px;
-    align-items: center; justify-content: center; }
-  .menu-btn span { width: 22px; height: 2px; background: var(--ink); display: block; border-radius: 2px; }
-
-  /* MOBILE MENU OVERLAY */
-  .menu-overlay { position: fixed; inset: 0; z-index: 120; background: var(--paper);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
-    opacity: 0; pointer-events: none; transform: translateY(-8px);
-    transition: opacity .4s var(--ease), transform .4s var(--ease); }
-  .menu-overlay.is-open { opacity: 1; pointer-events: auto; transform: none; }
-  .menu-close { position: absolute; top: 22px; right: 22px; background: none; border: 0; cursor: pointer; color: var(--faint); min-height: 44px; }
-  .menu-nav { display: flex; flex-direction: column; gap: 18px; text-align: center; }
-  .menu-nav a { font-size: clamp(28px, 8vw, 44px); font-weight: 600; letter-spacing: -0.03em; }
-  .menu-socials { display: flex; gap: 26px; }
-  .menu-nav a:hover { color: var(--red); }
-  /* social icon buttons — real IG/X/Discord glyphs, inherit currentColor */
-  .social-ic { display: inline-flex; align-items: center; justify-content: center;
-    color: var(--faint); min-width: 44px; min-height: 44px; transition: color .25s var(--ease), transform .25s var(--ease); }
-  .social-ic:hover { color: var(--red); transform: translateY(-2px); }
-  .foot-links .social-ic { min-width: 0; min-height: 0; padding: 6px; }
-
-  /* letter-swap micro-interaction (pointer only, motion-safe) */
-  .swap { position: relative; overflow: hidden; }
-  .swap span { display: inline-block; transition: transform .3s var(--ease); }
-  .swap span:nth-child(2) { position: absolute; left: 0; top: 100%; }
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .swap:hover span:nth-child(1) { transform: translateY(-100%); }
-    .swap:hover span:nth-child(2) { transform: translateY(-100%); }
+  /* Single-screen: lock scroll on capable viewports; relax on short/small screens
+     so the reserve form (and mobile keyboard) never get trapped. */
+  :global(body.home) { overflow-x: hidden; }
+  @media (min-width: 720px) and (min-height: 720px) {
+    :global(html:has(body.home)), :global(body.home) { height: 100svh; overflow: hidden; }
   }
 
-  /* HERO */
-  .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center;
-    padding: clamp(110px,18vh,190px) var(--gutter) 84px; overflow: hidden; }
-  .hero-glow { position: absolute; width: min(120vw,1100px); aspect-ratio: 1; top: 34%;
-    transform: translateY(-50%);
-    background: radial-gradient(circle, rgba(179,58,43,0.10) 0%, rgba(179,58,43,0.04) 34%, transparent 62%);
-    pointer-events: none; }
-  .hero-eye { margin-bottom: clamp(16px,4vh,40px); filter: drop-shadow(0 24px 44px rgba(26,23,20,0.13)); }
-  .hero-copy { gap: 24px; position: relative; }
-  .hero-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 6px; }
-  .hero-scroll { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
-    color: var(--faint); font-size: 10px; animation: bob 2.4s var(--ease) infinite; }
-  @keyframes bob { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,6px)} }
-  @media (prefers-reduced-motion: reduce){ .hero-scroll{animation:none} }
+  .stage {
+    position: relative; box-sizing: border-box;
+    min-height: 100svh; width: 100%;
+    display: grid; grid-template-rows: auto 1fr auto;
+    padding: clamp(20px, 3.4vh, 40px) clamp(20px, 4vw, 54px);
+    gap: clamp(12px, 2vh, 26px);
+  }
+  /* editorial hairline frame (k95) */
+  .stage::before {
+    content: ""; position: absolute; inset: clamp(12px, 1.6vw, 22px);
+    border: 1px solid var(--line); border-radius: 18px; pointer-events: none;
+  }
+  /* soft red-iris glow, upper area — the one atmospheric accent */
+  .stage::after {
+    content: ""; position: absolute; z-index: -1;
+    width: min(80vw, 720px); aspect-ratio: 1; top: 8%; left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(179,58,43,0.10) 0%, rgba(179,58,43,0.03) 40%, transparent 66%);
+    pointer-events: none;
+  }
 
-  /* SOUL */
-  .soulwrap { padding-block: clamp(110px,20vh,240px); }
-  .soul { color: var(--ink); }
+  /* custom cursor dot (shown only when JS adds .has-cursor) */
+  :global(.cursor) { display: none; }
+  :global(html.has-cursor) .stage,
+  :global(html.has-cursor) { cursor: none; }
+  :global(html.has-cursor .cursor) {
+    display: block; position: fixed; top: 0; left: 0; z-index: 300;
+    width: 12px; height: 12px; border-radius: 50%; background: var(--ink);
+    mix-blend-mode: difference; pointer-events: none;
+    transition: width .25s var(--ease), height .25s var(--ease);
+  }
+  :global(html.has-cursor .cursor.is-lg) { width: 42px; height: 42px; background: var(--red); }
 
-  /* ABOUT */
-  .about { gap: 22px; }
-  .about .h2 { margin-inline: auto; }
-  .triad { display: grid; grid-template-columns: 1fr; gap: 34px; max-width: 34ch;
-    margin: clamp(40px,6vh,80px) auto 0; text-align: left; width: 100%; }
-  .tri { display: flex; flex-direction: column; gap: 10px; }
-  .tri-k { color: var(--red); }
-  .tri p { max-width: 34ch; }
+  /* TOP ROW */
+  .hd { display: flex; align-items: center; justify-content: space-between; }
+  .wordmark { font-family: var(--mono); font-weight: 700; font-size: 15px; letter-spacing: 0.2em; color: var(--ink); }
+  .hd-right { display: flex; align-items: center; gap: 18px; }
+  .hd-tag { color: var(--faint); }
+  .ic { display: inline-flex; align-items: center; justify-content: center; color: var(--faint);
+    width: 34px; height: 34px; transition: color .25s var(--ease), transform .25s var(--ease); }
+  .ic:hover { color: var(--red); transform: translateY(-2px); }
 
-  /* PRIVACY */
-  .privacy { gap: 24px; }
-  .privacy .soul { color: var(--ink); margin-inline: auto; }
-  .privacy .lede { margin-inline: auto; margin-top: 6px; }
+  /* CORE */
+  .core { align-self: center; display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: clamp(14px, 2.2vh, 26px); }
+  .eye { will-change: transform; filter: drop-shadow(0 22px 40px rgba(26,23,20,0.14)); }
+  .core .display { font-size: clamp(40px, 7vw, 96px); color: var(--ink); }
+  .core .lede { max-width: 44ch; margin-inline: auto; }
 
-  /* RESERVE — the highlighted feature */
-  .reserve { position: relative; overflow: hidden; gap: 18px; }
-  .reserve-glow { position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 60% at 50% 28%, rgba(179,58,43,0.09) 0%, transparent 70%);
-    pointer-events: none; }
-  .reserve-mark { margin-bottom: 8px; filter: drop-shadow(0 16px 30px rgba(26,23,20,0.12)); }
-  .reserve .h2, .reserve .lede { margin-inline: auto; }
-  .reserve-count { font-size: 13px; }
-  .reserve-form { width: 100%; max-width: 460px; margin: 18px auto 0; display: flex; flex-direction: column; gap: 12px; }
-  .reserve-row { display: flex; }
-  /* the code row starts hidden; ID specificity beats .reserve-row's display:flex
-     (without it the hidden attribute is overridden and the field shows at step 1). */
+  /* RESERVE */
+  .rz { width: 100%; max-width: 500px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px; }
+  .rz-row { display: flex; gap: 8px; }
   #reserve-code-row[hidden] { display: none; }
-  .reserve-input { flex: 1; min-width: 0; width: 100%; font-family: var(--sans); font-size: 16px; /* ≥16px: no iOS zoom */
-    background: var(--panel); border: 1px solid var(--line); color: var(--ink);
-    border-radius: 16px; padding: 16px 20px; transition: border-color .25s, box-shadow .25s; }
-  .reserve-input::placeholder { color: var(--faint); }
-  #reserve-code { letter-spacing: .35em; text-align: center; font-variant-numeric: tabular-nums; }
-  .reserve-input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 4px rgba(26,23,20,0.05); }
-  .reserve-submit { width: 100%; justify-content: center; min-height: 52px; border-radius: 16px; }
-  .reserve-msg { min-height: 16px; letter-spacing: .14em; margin-top: 14px; }
-  .reserve-msg.ok { color: var(--red); } .reserve-msg.err { color: #c0392b; }
-  .reserve-note { margin-top: 2px; }
+  .rz-input {
+    flex: 1; min-width: 0; font-family: var(--sans); font-size: 16px; color: var(--ink);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 13px;
+    padding: 15px 18px; transition: border-color .25s, box-shadow .25s;
+  }
+  .rz-input::placeholder { color: var(--faint); }
+  .rz-input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 4px rgba(26,23,20,0.05); }
+  #reserve-code { letter-spacing: 0.34em; text-align: center; font-variant-numeric: tabular-nums; }
+  .rz-btn {
+    flex-shrink: 0; font-family: var(--mono); font-weight: 700; font-size: 13px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--paper); background: var(--ink); border: 1px solid var(--ink);
+    border-radius: 13px; padding: 0 26px; min-height: 52px; cursor: pointer;
+    transition: background .3s var(--ease), transform .3s var(--ease);
+  }
+  .rz-btn:hover { background: var(--red); border-color: var(--red); }
+  .rz-note { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--faint); }
+  .rz-msg { min-height: 18px; margin-top: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; }
+  .rz-msg.ok { color: var(--red); } .rz-msg.err { color: #c0392b; }
 
-  /* FOOTER */
-  .foot { border-top: 1px solid var(--line-2); padding: 44px var(--gutter) 56px; }
-  .foot-in { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; align-items: center;
-    justify-content: space-between; gap: 18px; text-align: center; }
-  .foot-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-  .foot-links a.eyebrow:hover { color: var(--ink); }
+  /* BOTTOM ROW — mono "instrument" meta, k95 framing */
+  .ft { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ft .meta, .count { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .ft-tag { color: var(--faint); }
+  .count { color: var(--red); font-variant-numeric: tabular-nums; text-align: center; }
+  .ft-links { display: flex; gap: 16px; }
+  .ft-links .meta { color: var(--faint); }
+  .ft-links .meta:hover { color: var(--ink); }
 
-  /* ≥720px: inline nav + counter, roomier layout */
-  @media (min-width: 720px) {
-    .nav-in { padding-block: 8px; }
-    .nav-counter { display: inline; }
-    .nav-links { display: flex; align-items: center; gap: 20px; }
-    .menu-btn { display: none; }
-    .hero-actions { flex-direction: row; gap: 22px; flex-wrap: wrap; justify-content: center; }
-    .triad { grid-template-columns: repeat(3,1fr); gap: clamp(28px,4vw,64px); max-width: none; }
-    .reserve-form { max-width: 520px; }
-    .foot-in { flex-direction: row; text-align: left; }
+  /* letter-swap hover (pointer + motion-safe): two stacked copies roll up */
+  .swap { position: relative; overflow: hidden; display: inline-flex; }
+  .swap > span { display: inline-block; transition: transform .34s var(--ease-cine); }
+  .swap > span:nth-child(2) { position: absolute; inset: 0; }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .swap:hover > span:nth-child(1) { transform: translateY(-115%); }
+    .swap:hover > span:nth-child(2) { transform: translateY(-100%); }
+  }
+
+  /* orchestrated load reveal: eye settles, then lines rise in sequence.
+     Hidden state is gated on html.js so a JS failure still shows everything. */
+  :global(html.js) .eye { opacity: 0; transform: translateY(10px) scale(0.96); }
+  :global(html.js) [data-r] { opacity: 0; transform: translateY(18px); }
+  .stage.is-in .eye { opacity: 1; transform: none; transition: opacity 1s var(--ease-cine), transform 1.2s var(--ease-cine); }
+  .stage.is-in [data-r] { opacity: 1; transform: none; transition: opacity .9s var(--ease-cine), transform 1s var(--ease-cine); }
+  .stage.is-in [data-r="1"] { transition-delay: .12s; }
+  .stage.is-in [data-r="2"] { transition-delay: .22s; }
+  .stage.is-in [data-r="3"] { transition-delay: .32s; }
+  .stage.is-in [data-r="4"] { transition-delay: .42s; }
+
+  /* MOBILE */
+  @media (max-width: 620px) {
+    .stage { gap: 18px; padding: 22px 18px; }
+    .hd-tag { display: none; }
+    .core { gap: 16px; }
+    .core .display { font-size: clamp(34px, 12vw, 56px); }
+    .rz-row { flex-direction: column; }
+    .rz-btn { min-height: 54px; padding: 15px; }
+    .ft { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eye, [data-r] { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
 </style>

@@ -8,6 +8,12 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function init() {
+    // Mark that JS is live (CSS gates its hidden-until-revealed states on html.js so a
+    // script failure still shows all content) and play the one-shot load reveal.
+    document.documentElement.classList.add('js');
+    var loadEl = document.querySelector('[data-load]');
+    if (loadEl) window.requestAnimationFrame(function () { loadEl.classList.add('is-in'); });
+
     var bar = document.querySelector('.scrollbar');
     var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
 

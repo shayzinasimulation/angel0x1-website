@@ -5,11 +5,13 @@ interface Props {
   title?: string;
   description?: string;
   og?: string;
+  bodyClass?: string;
 }
 const {
   title = 'Angel0x1 — The journal that knows you.',
   description = 'A private, on-device AI journal that builds a picture of who you are — and never tells anyone. Reserve your spot: the first 1,000 get 3 months free.',
   og = '/og.png',
+  bodyClass = '',
 } = Astro.props;
 
 // Absolute URLs (link unfurlers + canonical require them). Astro.site = angel0x1.fun.
@@ -76,15 +78,17 @@ const jsonLd = {
          hashed same-origin stylesheet (CSP style-src 'self'); no external fonts or
          trackers. -->
   </head>
-  <body>
+  <body class={bodyClass}>
     <div class="scrollbar" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"></div>
     <slot />
     <!-- Lenis (self-hosted, CSP script-src 'self') loads first; reveal.js drives its
-         rAF loop. menu.js toggles the mobile overlay. `is:inline` keeps Astro from
-         bundling these public/ assets — they stay external same-origin files (no inline
-         JS is emitted), so the strict CSP holds. -->
+         rAF loop. menu.js toggles the mobile overlay. cursor.js = custom cursor +
+         reactive eye. `is:inline` keeps Astro from bundling these public/ assets —
+         they stay external same-origin files (no inline JS is emitted), CSP holds. -->
     <script is:inline src="/scripts/lenis.min.js"></script>
     <script is:inline type="module" src="/scripts/reveal.js"></script>
     <script is:inline type="module" src="/scripts/menu.js"></script>
+    <script is:inline type="module" src="/scripts/cursor.js"></script>
   </body>
 </html>
