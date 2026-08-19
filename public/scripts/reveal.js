@@ -90,7 +90,8 @@
     window.addEventListener('load', measure);
 
     // Scroll-triggered reveals (IntersectionObserver — efficient, not part of the rAF loop).
-    var els = document.querySelectorAll('[data-reveal]');
+    // [data-reveal] = legal pages; [data-r] = the journal landing's ceremonial reveals.
+    var els = document.querySelectorAll('[data-reveal],[data-r]');
     if (!els.length) return;
     if (!('IntersectionObserver' in window)) {
       Array.prototype.forEach.call(els, function (el) { el.classList.add('is-in'); });

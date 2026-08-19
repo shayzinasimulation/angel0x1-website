@@ -47,7 +47,8 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#FCFBF9" />
+    <meta name="theme-color" content="#0B0B0D" />
+    <meta name="color-scheme" content="dark light" />
 
     <!-- Open Graph (absolute URLs; 1200×630 card) -->
     <meta property="og:site_name" content={SITE.name} />
@@ -80,15 +81,11 @@ const jsonLd = {
   </head>
   <body class={bodyClass}>
     <div class="scrollbar" aria-hidden="true"></div>
-    <div class="cursor" aria-hidden="true"></div>
     <slot />
-    <!-- Lenis (self-hosted, CSP script-src 'self') loads first; reveal.js drives its
-         rAF loop. menu.js toggles the mobile overlay. cursor.js = custom cursor +
-         reactive eye. `is:inline` keeps Astro from bundling these public/ assets —
-         they stay external same-origin files (no inline JS is emitted), CSP holds. -->
+    <!-- Lenis (self-hosted, CSP script-src 'self') gives the slow, held-breath scroll;
+         reveal.js drives its rAF loop + scroll-reveals. `is:inline` keeps Astro from
+         bundling these public/ assets — external same-origin files, no inline JS, CSP holds. -->
     <script is:inline src="/scripts/lenis.min.js"></script>
     <script is:inline type="module" src="/scripts/reveal.js"></script>
-    <script is:inline type="module" src="/scripts/menu.js"></script>
-    <script is:inline type="module" src="/scripts/cursor.js"></script>
   </body>
 </html>
