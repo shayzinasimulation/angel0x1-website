@@ -6,6 +6,9 @@ import { SITE, activeSocials } from '../config/site.ts';
 const socials = activeSocials();
 ---
 <Base bodyClass="home">
+  <!-- cinematic entrance: a spiral draws itself, then the veil lifts to the hero -->
+  <div id="veil" aria-hidden="true"><canvas></canvas></div>
+
   <main class="stage" data-load>
     <!-- TOP ROW -->
     <header class="hd">
@@ -57,11 +60,21 @@ const socials = activeSocials();
     </footer>
   </main>
 
+  <script is:inline type="module" src="/scripts/loader.js"></script>
   <script is:inline type="module" src="/scripts/reserve.js"></script>
 </Base>
 
 <!-- STYLE_MARK -->
 <style>
+  /* cinematic entrance veil */
+  #veil {
+    position: fixed; inset: 0; z-index: 200; background: var(--paper);
+    display: grid; place-items: center;
+    transition: opacity .9s var(--ease-cine), visibility .9s var(--ease-cine);
+  }
+  #veil canvas { display: block; }
+  :global(html.loaded) #veil { opacity: 0; visibility: hidden; }
+
   /* Single-screen: lock scroll on capable viewports; relax on short/small screens
      so the reserve form (and mobile keyboard) never get trapped. */
   :global(body.home) { overflow-x: hidden; }

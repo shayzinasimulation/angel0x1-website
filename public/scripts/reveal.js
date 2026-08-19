@@ -9,10 +9,22 @@
 
   function init() {
     // Mark that JS is live (CSS gates its hidden-until-revealed states on html.js so a
-    // script failure still shows all content) and play the one-shot load reveal.
+    // script failure still shows all content). The one-shot load reveal plays AFTER the
+    // cinematic veil lifts (html.loaded) so the hero rises in once the spiral finishes;
+    // pages with no veil just play on the next frame.
     document.documentElement.classList.add('js');
     var loadEl = document.querySelector('[data-load]');
-    if (loadEl) window.requestAnimationFrame(function () { loadEl.classList.add('is-in'); });
+    function playLoad() { if (loadEl) loadEl.classList.add('is-in'); }
+    if (loadEl) {
+      if (document.documentElement.classList.contains('loaded') || !document.getElementById('veil')) {
+        window.requestAnimationFrame(playLoad);
+      } else {
+        var obs = new MutationObserver(function () {
+          if (document.documentElement.classList.contains('loaded')) { playLoad(); obs.disconnect(); }
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      }
+    }
 
     var bar = document.querySelector('.scrollbar');
     var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
