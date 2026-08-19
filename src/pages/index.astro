@@ -1,292 +1,191 @@
 ---
 import Base from '../layouts/Base.astro';
+import Mark from '../components/Mark.astro';
 import { SITE, activeSocials } from '../config/site.ts';
 const socials = activeSocials();
 ---
-<Base bodyClass="jrnl">
-  <!-- fixed grain + a single hairline frame that reads as the "room" -->
-  <div class="grain" aria-hidden="true"></div>
+<Base bodyClass="brut">
+  <!-- ░ brutalist spec-sheet grid on warm paper. visible structure, mono system labels,
+       the winged eye as the one interactive graphic, RESERVE as the hero cell. ░ -->
+  <div class="sheet">
 
-  <!-- ░░ 1 · COLD OPEN ░░ one line the visitor could have written. no logo. -->
-  <section class="cold" data-section>
-    <p class="cold-meta mono" data-r>Angel0x1</p>
-    <h1 class="cold-line" data-r>
-      <span>You&#8217;ve written the same</span>
-      <span>worry three times this month.</span>
-      <span class="cold-line--dim">You just haven&#8217;t read it back.</span>
-    </h1>
-    <p class="cold-scroll mono" data-r aria-hidden="true">Scroll</p>
-  </section>
+    <!-- top rail -->
+    <header class="rail rail--top">
+      <span class="mono tag">Angel0x1</span>
+      <span class="mono tag tag--mid">On-device AI journal</span>
+      <span class="mono tag tag--end" data-counter>— / {SITE.cap.toLocaleString()} places</span>
+    </header>
 
-  <!-- ░░ 2 · MECHANISM ░░ real entry → its reading, side by side. proof, not claim. -->
-  <section class="mech" data-section>
-    <div class="wrap">
-      <p class="kicker mono" data-r>How it works — <span>nothing invented</span></p>
-      <div class="mech-grid">
-        <figure class="entry" data-r>
-          <figcaption class="mono entry-cap">
-            <span>Your entry</span><span>March 4 · 11:52 PM</span>
-          </figcaption>
-          <blockquote class="entry-text">
-            Told everyone I was fine about the move. Spent the whole night
-            reorganizing boxes I&#8217;d already packed. Didn&#8217;t sleep. Again.
-          </blockquote>
-        </figure>
-
-        <figure class="reading" data-r>
-          <figcaption class="mono reading-cap">
-            <span>What it read back</span><span>on-device</span>
-          </figcaption>
-          <blockquote class="reading-text">
-            You reach for order when you can&#8217;t reach for a person.
-            It&#8217;s the third move you&#8217;ve called <em>fine.</em>
-          </blockquote>
-          <p class="reading-trace mono" data-r>
-            <span class="dot" aria-hidden="true"></span>
-            drawn from 3 of your entries · never sent anywhere
-          </p>
-        </figure>
+    <!-- HERO ROW: statement | the watching eye -->
+    <section class="row row--hero" data-section>
+      <div class="cell cell--say" data-r>
+        <p class="mono label">Fig. 01 — the premise</p>
+        <h1 class="say">
+          It reads your own<br/>words back to you.<br/>
+          <span class="say-dim">Nothing ever leaves the phone.</span>
+        </h1>
       </div>
-      <p class="mech-note confess" data-r>It doesn&#8217;t analyze you. It listens, and hands you your own words.</p>
-    </div>
-  </section>
-
-  <!-- ░░ 3 · PRIVACY AS SPINE ░░ plain soulful register, not a badge grid. -->
-  <section class="spine" data-section>
-    <div class="wrap spine-in">
-      <p class="spine-line confess" data-r>Nothing you write here has ever left this phone.</p>
-      <div class="spine-facts">
-        <p class="mono" data-r><span class="spine-k">Encryption</span>AES-256-GCM, sealed on device</p>
-        <p class="mono" data-r><span class="spine-k">Model</span>runs on-device, by default</p>
-        <p class="mono" data-r><span class="spine-k">Erase</span>a wipe is a cryptographic burn — the key is gone, not hidden</p>
+      <div class="cell cell--eye" data-r>
+        <div class="eye-holder" data-eye><Mark size={300} reactive={true} /></div>
+        <p class="mono label label--eye">It watches. It never tells.</p>
       </div>
-      <p class="spine-tail confess" data-r>There is no server to subpoena. There is no <span class="em">us</span> that can read it.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ░░ 4 · THE FOUR THEMES ░░ one tactile switch, not a feature list. -->
-  <section class="themes" data-section id="themes">
-    <div class="wrap">
-      <p class="kicker mono" data-r>Four ways it holds you</p>
-      <div class="theme-stage" data-r>
-        <div class="theme-swatches" role="tablist" aria-label="Themes">
-          <button class="sw sw--bone is-active" role="tab" aria-selected="true" data-theme="bone">
-            <span class="sw-dot" aria-hidden="true"></span><span class="mono">Bone</span>
-          </button>
-          <button class="sw sw--obsidian" role="tab" aria-selected="false" data-theme="obsidian">
-            <span class="sw-dot" aria-hidden="true"></span><span class="mono">Obsidian</span>
-          </button>
-          <button class="sw sw--paper" role="tab" aria-selected="false" data-theme="paper">
-            <span class="sw-dot" aria-hidden="true"></span><span class="mono">Paper</span>
-          </button>
-          <button class="sw sw--glass" role="tab" aria-selected="false" data-theme="glass">
-            <span class="sw-dot" aria-hidden="true"></span><span class="mono">Glass</span>
-          </button>
+    <!-- RESERVE ROW: the main highlight, a filled cell that owns the page -->
+    <section class="row row--reserve" data-section id="reserve">
+      <div class="cell cell--reserve" data-r>
+        <div class="reserve-head">
+          <p class="mono label">Fig. 02 — reserve your place</p>
+          <p class="mono places" data-counter>— / {SITE.cap.toLocaleString()} places</p>
         </div>
-        <div class="theme-plate" data-theme-plate="bone" aria-live="polite">
-          <p class="theme-mood confess" data-mood>Dry, quiet, close to the bone. For the nights you want it plain.</p>
-        </div>
+        <p class="reserve-say confess">The first {SITE.cap.toLocaleString()} get in before anyone else.</p>
+
+        <form class="rz" id="reserve-form" novalidate>
+          <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="rz-row">
+            <label for="reserve-email" class="vh">Email address</label>
+            <input id="reserve-email" name="email" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email" required class="rz-input" />
+            <button type="submit" class="rz-btn" id="reserve-submit"><span class="btn-label">Reserve</span></button>
+          </div>
+          <div class="rz-row rz-coderow" id="reserve-code-row" hidden>
+            <label for="reserve-code" class="vh">6-digit code</label>
+            <input id="reserve-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="enter 6-digit code" class="rz-input" />
+          </div>
+          <p class="rz-note mono">A one-time code confirms it&#8217;s really you. Nothing else.</p>
+        </form>
+        <p class="rz-msg mono" id="reserve-msg" aria-live="polite"></p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ░░ 5 · THE FOMO BEAT ░░ existential, quiet — the emotional peak before the CTA. -->
-  <section class="fomo" data-section>
-    <p class="fomo-line confess" data-r>
-      The version of you from six months ago<br/>
-      wrote something you should probably read.
-    </p>
-    <p class="fomo-sub mono" data-r>Most people never find out why they keep doing this.</p>
-  </section>
-
-  <!-- ░░ 6 · CTA ░░ one action only. -->
-  <section class="cta" data-section id="reserve">
-    <div class="wrap cta-in">
-      <p class="cta-line confess" data-r>Start the record before you forget why you needed it.</p>
-
-      <form class="rz" id="reserve-form" data-r novalidate>
-        <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <div class="rz-row">
-          <label for="reserve-email" class="vh">Email address</label>
-          <input id="reserve-email" name="email" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email" required class="rz-input" />
-          <button type="submit" class="rz-btn" id="reserve-submit"><span class="btn-label">Reserve your place</span></button>
-        </div>
-        <div class="rz-row rz-coderow" id="reserve-code-row" hidden>
-          <label for="reserve-code" class="vh">6-digit code</label>
-          <input id="reserve-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="6-digit code" class="rz-input" />
-        </div>
-        <p class="rz-note mono">A one-time code confirms it&#8217;s really you. Nothing else.</p>
-      </form>
-      <p class="rz-msg mono" id="reserve-msg" aria-live="polite"></p>
-
-      <div class="cta-foot">
-        <span class="mono" data-counter>— / {SITE.cap.toLocaleString()} places</span>
-        <nav class="cta-links mono">
-          {socials.map((s) => <a href={s.href} target="_blank" rel="me noopener">{s.label}</a>)}
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms</a>
-        </nav>
+    <!-- SPEC ROW: three brutalist cells — the plain-spoken guarantees -->
+    <section class="row row--spec" data-section>
+      <div class="cell cell--spec" data-r>
+        <p class="mono label">01 / private</p>
+        <p class="spec-say confess">Nothing you write here has ever left this phone.</p>
+        <p class="mono spec-meta">AES-256-GCM · sealed on device</p>
       </div>
-    </div>
-  </section>
+      <div class="cell cell--spec" data-r>
+        <p class="mono label">02 / on-device</p>
+        <p class="spec-say confess">It doesn&#8217;t analyze you. It listens.</p>
+        <p class="mono spec-meta">the model runs locally, by default</p>
+      </div>
+      <div class="cell cell--spec" data-r>
+        <p class="mono label">03 / yours</p>
+        <p class="spec-say confess">A wipe is a burn. The key is gone, not hidden.</p>
+        <p class="mono spec-meta">no server · no account · no us</p>
+      </div>
+    </section>
+
+    <!-- bottom rail -->
+    <footer class="rail rail--bottom">
+      <nav class="mono links">
+        {socials.map((s) => <a href={s.href} target="_blank" rel="me noopener">{s.label}</a>)}
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+      <span class="mono tag tag--end">Angel0x1 · {new Date().getFullYear()}</span>
+    </footer>
+  </div>
 
   <script is:inline type="module" src="/scripts/reserve.js"></script>
-  <script is:inline type="module" src="/scripts/themes.js"></script>
 </Base>
 
 <!-- STYLE_MARK -->
 <style>
-  /* ── the room: obsidian ground, warm paper light, fixed grain ─────────────── */
-  :global(body.jrnl) { background: var(--obsidian); color: var(--on-dark); overflow-x: hidden; }
-  .grain {
-    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
+  :global(body.brut) { background: var(--paper); color: var(--ink); }
+
+  /* the sheet: a bordered architectural document, hairline structure everywhere */
+  .sheet {
+    max-width: 1240px; margin-inline: auto; min-height: 100svh;
+    border-left: 1px solid var(--line); border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
   }
-  @media (prefers-reduced-motion: no-preference) { .grain { animation: grain 6s steps(4) infinite; } }
-  @keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-2%,1%)} 50%{transform:translate(1%,-2%)} 75%{transform:translate(-1%,2%)} }
+  .row { border-top: 1px solid var(--line); display: grid; }
+  .cell { padding: clamp(24px, 3.4vw, 52px); position: relative; }
 
-  .wrap { width: 100%; max-width: 1080px; margin-inline: auto; padding-inline: var(--gutter); position: relative; z-index: 2; }
-  .mono { font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
-  .confess { font-family: var(--confess); font-weight: 400; letter-spacing: -0.015em; line-height: 1.18; }
+  .mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .confess { font-family: var(--confess); font-weight: 400; letter-spacing: -0.015em; line-height: 1.16; }
+  .label { color: var(--bone-soft); margin-bottom: clamp(18px,2.4vw,30px); }
 
-  section[data-section] { position: relative; z-index: 2; }
+  /* rails */
+  .rail { display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 14px clamp(24px,3.4vw,52px); }
+  .rail--top { border-bottom: 0; }
+  .rail--bottom { border-top: 1px solid var(--line); margin-top: auto; }
+  .tag { color: var(--bone-soft); }
+  .tag--mid { color: var(--ink); }
+  .tag--end { color: var(--ember); }
+  @media (max-width: 640px) { .tag--mid { display: none; } }
 
-  /* held-breath reveals — slow, no bounce */
-  :global(html.js) [data-r] { opacity: 0; transform: translateY(16px); filter: blur(2px); }
-  :global(html.js) [data-r].is-in { opacity: 1; transform: none; filter: none;
-    transition: opacity 1.4s var(--ease-cine), transform 1.5s var(--ease-cine), filter 1.4s var(--ease-cine); }
+  /* held-breath reveals */
+  :global(html.js) [data-r] { opacity: 0; transform: translateY(14px); }
+  :global(html.js) [data-r].is-in { opacity: 1; transform: none;
+    transition: opacity 1.1s var(--ease-cine), transform 1.2s var(--ease-cine); }
   @media (prefers-reduced-motion: reduce) {
-    :global(html.js) [data-r] { opacity: 1 !important; transform: none !important; filter: none !important; }
+    :global(html.js) [data-r] { opacity: 1 !important; transform: none !important; }
   }
 
-  /* ── 1 · COLD OPEN ─────────────────────────────────────────────────────────── */
-  .cold {
-    min-height: 100svh; display: flex; flex-direction: column; justify-content: center;
-    padding: clamp(28px,8vh,80px) var(--gutter);
-    max-width: 1180px; margin-inline: auto;
-  }
-  .cold-meta { color: var(--on-dark-faint); margin-bottom: clamp(28px,6vh,64px); }
-  .cold-line {
-    font-family: var(--confess); font-weight: 300;
-    font-size: clamp(30px, 5.4vw, 74px); line-height: 1.14; letter-spacing: -0.02em;
-    color: var(--on-dark); max-width: 20ch;
-  }
-  .cold-line span { display: block; }
-  .cold-line--dim { color: var(--on-dark-soft); font-style: italic; margin-top: 0.5em; }
-  .cold-scroll { color: var(--on-dark-faint); margin-top: clamp(40px,9vh,110px); }
-  @media (prefers-reduced-motion: no-preference) {
-    .cold-scroll.is-in { animation: breathe 3.4s var(--ease) 1.2s infinite; }
-  }
-  @keyframes breathe { 0%,100%{opacity:0.4} 50%{opacity:1} }
+  /* links */
+  .links { display: flex; gap: 18px; }
+  .links a { color: var(--bone-soft); }
+  .links a:hover { color: var(--ink); }
 
-  .kicker { color: var(--on-dark-soft); margin-bottom: clamp(32px,6vh,60px); }
-  .kicker span { color: var(--ember); }
-
-  /* ── 2 · MECHANISM — the paper slab, entry vs reading ─────────────────────── */
-  .mech { padding-block: clamp(90px,16vh,190px); }
-  .mech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px,2vw,28px); align-items: start; }
-  .entry, .reading { border-radius: 4px; padding: clamp(24px,3vw,40px); position: relative; }
-  /* the entry: cold glass surface — what you gave it */
-  .entry { background: var(--obsidian-2); border: 1px solid var(--line-d); }
-  .entry-cap { display: flex; justify-content: space-between; color: var(--on-dark-faint); margin-bottom: 22px; }
-  .entry-text { font-family: var(--confess); font-weight: 300; font-size: clamp(18px,1.5vw,23px);
-    line-height: 1.5; color: var(--on-dark-soft); font-style: italic; }
-  /* the reading: warm paper — what it hands back */
-  .reading { background: var(--paper); border: 1px solid var(--paper-2);
-    box-shadow: 0 40px 80px -50px rgba(0,0,0,0.8); }
-  .reading-cap { display: flex; justify-content: space-between; color: var(--bone-soft); margin-bottom: 22px; }
-  .reading-text { font-family: var(--confess); font-weight: 400; font-size: clamp(20px,1.8vw,27px);
-    line-height: 1.4; color: var(--ink); letter-spacing: -0.01em; }
-  .reading-text em { font-style: italic; color: var(--ember); }
-  .reading-trace { display: flex; align-items: center; gap: 9px; margin-top: 22px; color: var(--bone-soft);
-    text-transform: none; letter-spacing: 0.04em; font-size: 11px; }
-  .reading-trace .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ember); flex-shrink: 0; }
-  @media (prefers-reduced-motion: no-preference) { .reading-trace.is-in .dot { animation: pulse 2.6s var(--ease) infinite; } }
-  @keyframes pulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
-  .mech-note { margin-top: clamp(40px,7vh,72px); font-size: clamp(21px,2.4vw,34px); color: var(--on-dark);
-    max-width: 24ch; }
-  @media (max-width: 720px) { .mech-grid { grid-template-columns: 1fr; } }
-
-  /* ── 3 · PRIVACY SPINE ─────────────────────────────────────────────────────── */
-  .spine { padding-block: clamp(90px,18vh,210px); border-top: 1px solid var(--line-d); }
-  .spine-in { max-width: 760px; }
-  .spine-line { font-size: clamp(28px,4vw,52px); color: var(--on-dark); letter-spacing: -0.02em; }
-  .spine-facts { margin: clamp(40px,7vh,72px) 0; display: flex; flex-direction: column; gap: 18px; }
-  .spine-facts p { color: var(--on-dark-soft); text-transform: none; letter-spacing: 0.02em;
-    font-size: 13px; line-height: 1.5; display: flex; gap: 16px; }
-  .spine-k { color: var(--glass); flex-shrink: 0; width: 96px; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; padding-top: 2px; }
-  .spine-tail { font-size: clamp(21px,2.6vw,34px); color: var(--on-dark-soft); }
-  .spine-tail .em { color: var(--on-dark); font-style: italic; }
-
-  /* ── 4 · THEMES — one tactile switch, the plate recolors slowly ───────────── */
-  .themes { padding-block: clamp(90px,16vh,190px); border-top: 1px solid var(--line-d); }
-  .theme-stage { display: grid; grid-template-columns: 220px 1fr; gap: clamp(24px,4vw,64px); align-items: stretch; }
-  .theme-swatches { display: flex; flex-direction: column; gap: 4px; }
-  .sw { display: flex; align-items: center; gap: 14px; padding: 15px 16px; cursor: pointer;
-    background: transparent; border: 1px solid transparent; border-radius: 3px; color: var(--on-dark-soft);
-    text-align: left; transition: color .5s var(--ease), background .5s var(--ease), border-color .5s var(--ease); }
-  .sw .mono { font-size: 12px; }
-  .sw-dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.15); }
-  .sw--bone .sw-dot { background: var(--bone); }
-  .sw--obsidian .sw-dot { background: #26262c; }
-  .sw--paper .sw-dot { background: var(--paper); }
-  .sw--glass .sw-dot { background: var(--glass); }
-  .sw:hover { color: var(--on-dark); }
-  .sw.is-active { color: var(--on-dark); background: rgba(255,255,255,0.03); border-color: var(--line-d); }
-  .theme-plate { border-radius: 4px; padding: clamp(30px,4vw,54px); display: flex; align-items: flex-end;
-    min-height: clamp(260px,40vh,380px); border: 1px solid var(--line-d);
-    transition: background 1.1s var(--ease-cine), color 1.1s var(--ease-cine); }
-  .theme-mood { font-size: clamp(21px,2.4vw,34px); max-width: 22ch; transition: color 1.1s var(--ease-cine); }
-  /* the four materials */
-  .theme-plate[data-theme-plate="bone"]     { background: #24231f; }
-  .theme-plate[data-theme-plate="bone"] .theme-mood { color: var(--bone); }
-  .theme-plate[data-theme-plate="obsidian"] { background: #101014; }
-  .theme-plate[data-theme-plate="obsidian"] .theme-mood { color: var(--on-dark-soft); }
-  .theme-plate[data-theme-plate="paper"]    { background: var(--paper); }
-  .theme-plate[data-theme-plate="paper"] .theme-mood { color: var(--ink); }
-  .theme-plate[data-theme-plate="glass"]    { background: linear-gradient(160deg,#2b333a,#20262b); }
-  .theme-plate[data-theme-plate="glass"] .theme-mood { color: #cfe0e8; }
-  @media (max-width: 680px) {
-    .theme-stage { grid-template-columns: 1fr; }
-    .theme-swatches { flex-direction: row; flex-wrap: wrap; }
-    .sw { flex: 1; min-width: 42%; }
+  /* ── HERO ROW ─────────────────────────────────────────────────────────────── */
+  .row--hero { grid-template-columns: 1.15fr 1fr; }
+  .cell--say { display: flex; flex-direction: column; justify-content: center; }
+  .cell--eye { border-left: 1px solid var(--line); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 22px; background: var(--panel); }
+  .say { font-family: var(--confess); font-weight: 300; font-size: clamp(30px,4.6vw,60px);
+    line-height: 1.1; letter-spacing: -0.025em; color: var(--ink); }
+  .say-dim { color: var(--bone-soft); font-style: italic; }
+  .eye-holder { will-change: transform; filter: drop-shadow(0 18px 34px rgba(23,21,15,0.16)); }
+  .label--eye { margin: 0; color: var(--bone-soft); text-align: center; }
+  @media (max-width: 780px) {
+    .row--hero { grid-template-columns: 1fr; }
+    .cell--eye { border-left: 0; border-top: 1px solid var(--line); order: -1; }
   }
 
-  /* ── 5 · FOMO — the peak, held in near-black ──────────────────────────────── */
-  .fomo { min-height: 92svh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; padding: clamp(60px,12vh,140px) var(--gutter); border-top: 1px solid var(--line-d); }
-  .fomo-line { font-size: clamp(28px,4.6vw,64px); font-weight: 300; color: var(--on-dark); letter-spacing: -0.02em; }
-  .fomo-sub { margin-top: clamp(28px,5vh,44px); color: var(--on-dark-faint); text-transform: none;
-    letter-spacing: 0.03em; font-size: 13px; }
-
-  /* ── 6 · CTA — one action ─────────────────────────────────────────────────── */
-  .cta { padding-block: clamp(80px,14vh,170px); border-top: 1px solid var(--line-d); }
-  .cta-in { max-width: 640px; }
-  .cta-line { font-size: clamp(24px,3.2vw,42px); color: var(--on-dark); letter-spacing: -0.02em; }
-  .rz { margin-top: clamp(34px,5vh,48px); display: flex; flex-direction: column; gap: 12px; }
-  .rz-row { display: flex; gap: 8px; }
+  /* ── RESERVE ROW — the highlight ─────────────────────────────────────────── */
+  .row--reserve { grid-template-columns: 1fr; }
+  .cell--reserve { background: var(--paper-2); padding-block: clamp(40px,6vw,84px); }
+  .reserve-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+  .reserve-head .places { color: var(--ember); }
+  .reserve-say { font-size: clamp(26px,3.4vw,46px); color: var(--ink); margin: clamp(14px,2vw,22px) 0 clamp(26px,3vw,38px); max-width: 20ch; }
+  .rz { max-width: 620px; display: flex; flex-direction: column; gap: 10px; }
+  .rz-row { display: flex; gap: 0; }
   #reserve-code-row[hidden] { display: none; }
+  .rz-coderow { margin-top: 10px; }
+  /* brutalist inputs: hard edges, heavy hairline, no radius */
   .rz-input { flex: 1; min-width: 0; font-family: var(--mono); font-size: 15px; letter-spacing: 0.02em;
-    color: var(--on-dark); background: var(--obsidian-2); border: 1px solid var(--line-d);
-    border-radius: 3px; padding: 16px 18px; transition: border-color .3s var(--ease); }
-  .rz-input::placeholder { color: var(--on-dark-faint); text-transform: none; }
-  .rz-input:focus { outline: none; border-color: var(--glass); }
+    color: var(--ink); background: var(--paper); border: 1px solid var(--ink); border-radius: 0;
+    padding: 18px 20px; transition: background .2s var(--ease); }
+  .rz-input::placeholder { color: var(--paper-dim); text-transform: none; letter-spacing: 0.04em; }
+  .rz-input:focus { outline: none; background: var(--panel); box-shadow: inset 0 0 0 1px var(--ink); }
+  .rz-coderow .rz-input { border: 1px solid var(--ink); }
   #reserve-code { letter-spacing: 0.4em; text-align: center; }
-  .rz-btn { flex-shrink: 0; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--obsidian); background: var(--bone); border: 1px solid var(--bone); border-radius: 3px;
-    padding: 0 26px; min-height: 54px; cursor: pointer; transition: background .4s var(--ease), color .4s var(--ease); }
-  .rz-btn:hover { background: var(--paper); }
-  .rz-note { margin-top: 4px; color: var(--on-dark-faint); text-transform: none; letter-spacing: 0.03em; font-size: 11px; }
-  .rz-msg { min-height: 18px; margin-top: 14px; text-transform: none; letter-spacing: 0.04em; font-size: 12px; color: var(--on-dark-soft); }
-  .rz-msg.ok { color: var(--bone); } .rz-msg.err { color: var(--ember); }
-  .cta-foot { margin-top: clamp(48px,9vh,90px); display: flex; align-items: center; justify-content: space-between;
-    gap: 16px; padding-top: 22px; border-top: 1px solid var(--line-d); }
-  .cta-foot .mono, .cta-links a { color: var(--on-dark-faint); font-size: 11px; }
-  .cta-links { display: flex; gap: 16px; }
-  .cta-links a:hover { color: var(--on-dark); }
+  .rz-btn { flex-shrink: 0; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--paper); background: var(--ink); border: 1px solid var(--ink); border-radius: 0;
+    padding: 0 clamp(28px,4vw,48px); min-height: 56px; cursor: pointer; margin-left: -1px;
+    transition: background .3s var(--ease), color .3s var(--ease); }
+  .rz-btn:hover { background: var(--ember); border-color: var(--ember); }
+  .rz-note { margin-top: 6px; color: var(--bone-soft); text-transform: none; letter-spacing: 0.04em; font-size: 11px; }
+  .rz-msg { min-height: 18px; margin-top: 14px; text-transform: none; letter-spacing: 0.04em; font-size: 12px; color: var(--ink-soft); }
+  .rz-msg.ok { color: var(--ember); } .rz-msg.err { color: #B3492E; }
   @media (max-width: 560px) {
-    .rz-row { flex-direction: column; } .rz-btn { min-height: 52px; padding: 16px; }
-    .cta-foot { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .rz-row { flex-direction: column; gap: 10px; }
+    .rz-btn { margin-left: 0; min-height: 54px; padding: 16px; }
+  }
+
+  /* ── SPEC ROW — three brutalist guarantee cells ──────────────────────────── */
+  .row--spec { grid-template-columns: repeat(3, 1fr); }
+  .cell--spec { display: flex; flex-direction: column; min-height: clamp(200px,24vw,280px); }
+  .cell--spec + .cell--spec { border-left: 1px solid var(--line); }
+  .spec-say { font-size: clamp(19px,1.8vw,26px); color: var(--ink); margin-bottom: auto; max-width: 22ch; }
+  .spec-meta { color: var(--bone-soft); text-transform: none; letter-spacing: 0.04em; font-size: 11px; margin-top: 28px; }
+  @media (max-width: 780px) {
+    .row--spec { grid-template-columns: 1fr; }
+    .cell--spec + .cell--spec { border-left: 0; border-top: 1px solid var(--line); }
+    .cell--spec { min-height: 0; }
+    .spec-say { margin-bottom: 20px; }
   }
 </style>

@@ -37,34 +37,28 @@
   font-weight: 200 800; font-display: swap; font-style: italic;
 }
 :root {
-  /* Cozy-brutal palette — the app's real materials. Cold surfaces, warm ritual. */
-  --obsidian: #0B0B0D;   /* controlled dark — the room that watches */
-  --obsidian-2:#14141A;  /* raised dark surface */
-  --paper:  #F3EFE6;     /* warm notebook paper — the warmth */
-  --paper-2:#EAE4D6;     /* deeper paper / edge */
-  --bone:   #D8D2C6;     /* dry bone, cool neutral */
-  --glass:  #7C8A94;     /* cold blue-grey, screen-glow neutral */
-  --ink:    #17150F;     /* near-black warm ink on paper */
-  --ink-soft:#4A453C;    /* secondary ink on paper */
-  --bone-soft:#9A958A;   /* muted labels on paper */
-  --paper-dim:#B9B2A4;   /* faint on paper */
-  --on-dark: #EDEAE2;    /* bone text on obsidian */
-  --on-dark-soft:#8B8A86;/* secondary on obsidian */
-  --on-dark-faint:#565651;/* faint on obsidian */
-  --ember:  #B3492E;     /* the one warm accent — ember, used almost never */
-  --line-d: rgba(237,234,226,0.14);  /* hairline on dark */
-  --line-p: rgba(23,21,15,0.14);     /* hairline on paper */
+  /* Warm-white brutalist — Ex Machina architecture in bone & paper, one ember accent.
+     Cozy warmth (paper, the eye) held inside a cold structural grid. */
+  --paper:   #F4F1EA;   /* warm white — the page */
+  --paper-2: #EBE6DB;   /* deeper paper / filled cell */
+  --panel:   #FBFAF6;   /* lifted cell */
+  --obsidian:#17150F;   /* the one dark surface — the eye's room */
+  --ink:     #17150F;   /* near-black warm ink */
+  --ink-soft:#514B40;   /* secondary ink */
+  --bone-soft:#8A8377;  /* mono labels, meta */
+  --paper-dim:#B4AD9E;  /* faint */
+  --on-dark: #EDE7DA;   /* text on the dark cell */
+  --ember:   #B3492E;   /* the one accent — used sparingly */
+  --line:    rgba(23,21,15,0.20);  /* brutalist hairline — visible structure */
+  --line-2:  rgba(23,21,15,0.10);
 
   /* legacy aliases so existing pages (privacy/terms) keep working */
-  --panel:  #FFFFFF;
   --soft:   var(--ink-soft);
   --faint:  var(--bone-soft);
-  --line:   var(--line-p);
-  --line-2: rgba(23,21,15,0.06);
   --red:    var(--ember);
   --taupe:  #8C8377;
 
-  /* the mark reads its colours from here, so the eye restyles with the theme */
+  /* the mark reads its colours from here — the eye on warm paper */
   --mark-almond:   var(--ink);
   --mark-iris:     var(--ember);
   --mark-pupil:    var(--paper);
@@ -72,16 +66,16 @@
   --mark-wing-bone:var(--ink);
   --mark-crown:    var(--bone-soft);
 
-  --confess: "Newsreader", "Hoefler Text", Georgia, serif; /* soulful/confessional serif */
-  --display: "Newsreader", "Hoefler Text", Georgia, serif; /* headers share the serif voice */
+  --confess: "Newsreader", "Hoefler Text", Georgia, serif; /* the one warm/human line */
+  --display: "Newsreader", "Hoefler Text", Georgia, serif;
   --sans:  "Hanken", -apple-system, "Segoe UI", Roboto, system-ui, sans-serif;
   --serif: "Newsreader", "Hoefler Text", Georgia, serif;
-  --mono:  "SpaceMono", ui-monospace, "SF Mono", "Menlo", monospace; /* system-flavored copy */
+  --mono:  "SpaceMono", ui-monospace, "SF Mono", "Menlo", monospace; /* brutalist system voice */
 
   --measure: 58ch;
-  --gutter: clamp(22px, 6vw, 64px);
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);        /* long, expensive-feeling ease-out */
-  --ease-cine: cubic-bezier(0.19, 1, 0.22, 1);  /* deeper, more cinematic settle */
+  --gutter: clamp(20px, 5vw, 56px);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cine: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

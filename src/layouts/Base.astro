@@ -47,8 +47,7 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#0B0B0D" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#F4F1EA" />
 
     <!-- Open Graph (absolute URLs; 1200×630 card) -->
     <meta property="og:site_name" content={SITE.name} />
@@ -87,5 +86,6 @@ const jsonLd = {
          bundling these public/ assets — external same-origin files, no inline JS, CSP holds. -->
     <script is:inline src="/scripts/lenis.min.js"></script>
     <script is:inline type="module" src="/scripts/reveal.js"></script>
+    <script is:inline type="module" src="/scripts/eye.js"></script>
   </body>
 </html>
