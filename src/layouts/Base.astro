@@ -9,7 +9,7 @@ interface Props {
 }
 const {
   title = 'Angel0x1 — the journal that reads you forward',
-  description = 'A private, on-device AI journal that reads your past entries and shows where you’re heading — recurring words, patterns, a projected trajectory. On-device model hub + voice input. Nothing ever leaves your phone. First 1,000 reserve 3 months free.',
+  description = 'A private, on-device AI journal that reads your past entries and shows where you’re heading — recurring words, patterns, a projected trajectory. On-device model hub + voice input. Nothing ever leaves your phone. First 1,000 reserve 1 month free.',
   og = '/og.png',
   bodyClass = '',
 } = Astro.props;
@@ -54,7 +54,7 @@ const jsonLd = {
         'On-device voice input, transcribed locally',
         'AES-256-GCM encryption; nothing is sent to any server',
       ],
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'First 1,000 who reserve get 3 months free at launch' },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'First 1,000 who reserve get 1 month free at launch' },
     },
   ],
 };

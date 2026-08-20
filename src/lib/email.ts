@@ -65,13 +65,13 @@ export function otpText(code: string): string {
 export function confirmationHtml(): string {
   return shell(`
     <h1 style="margin:0 0 12px;font-size:26px;line-height:1.15;letter-spacing:-0.02em;color:#1A1714;font-weight:600;">Your spot is reserved.</h1>
-    <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#6B6560;">You're one of the first <strong style="color:#1A1714;">1,000</strong>. Your code for <strong style="color:#1A1714;">3 months of Angel free</strong> will arrive by email the moment we launch.</p>
+    <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#6B6560;">You're one of the first <strong style="color:#1A1714;">1,000</strong>. Your code for <strong style="color:#1A1714;">1 month of Angel free</strong> will arrive by email the moment we launch.</p>
     <p style="margin:0;font-size:15px;line-height:1.6;color:#6B6560;">Until then, follow along — that's where launch day drops first.</p>
   `);
 }
 
 export function confirmationText(): string {
-  return `Your spot is reserved. You're one of the first 1,000 — your code for 3 months of Angel free arrives by email at launch. Follow along for updates.`;
+  return `Your spot is reserved. You're one of the first 1,000 — your code for 1 month of Angel free arrives by email at launch. Follow along for updates.`;
 }
 
 async function resendSend(to: string, subject: string, html: string, text: string): Promise<boolean> {

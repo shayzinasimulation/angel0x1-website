@@ -34,7 +34,7 @@ const socials = activeSocials();
           </div>
         </form>
         <p class="rz-msg mono" id="reserve-msg" aria-live="polite"></p>
-        <p class="hero-offer mono">The first {SITE.cap.toLocaleString()} reserve free — <span>3 months of Angel0x1, on the house.</span></p>
+        <p class="hero-offer mono">The first {SITE.cap.toLocaleString()} reserve free — <span>1 month of Angel0x1, on the house.</span></p>
         <p class="hero-remain mono" data-counter>— / {SITE.cap.toLocaleString()} places left</p>
       </div>
       <span class="hero-scroll mono" aria-hidden="true">Scroll ↓</span>
@@ -252,7 +252,11 @@ const socials = activeSocials();
     <footer class="rail rail--bottom">
       <span class="mono tag privacy-line">All of it on your phone. None of it anywhere else.</span>
       <nav class="mono links">
-        {socials.map((s) => <a href={s.href} target="_blank" rel="me noopener">{s.label}</a>)}
+        {socials.map((s) => (
+          <a class="foot-ic" href={s.href} target="_blank" rel="me noopener" aria-label={s.label}>
+            <SocialIcon name={s.key} size={17} />
+          </a>
+        ))}
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
       </nav>
@@ -280,8 +284,10 @@ const socials = activeSocials();
   .tag { color: var(--bone-soft); }
   .tag--end { color: var(--ember); }
   .privacy-line { color: var(--ink); text-transform: none; letter-spacing: 0.02em; font-family: var(--confess); font-size: 15px; }
-  .links { display: flex; gap: 18px; }
+  .links { display: flex; gap: 18px; align-items: center; }
   .links a { color: var(--bone-soft); } .links a:hover { color: var(--ink); }
+  .foot-ic { display: inline-flex; align-items: center; color: var(--bone-soft); }
+  .foot-ic:hover { color: var(--ember); }
 
   :global(html.js) [data-r] { opacity: 0; transform: translateY(14px); }
   :global(html.js) [data-r].is-in { opacity: 1; transform: none;
@@ -386,7 +392,9 @@ const socials = activeSocials();
   @keyframes gfade { to { opacity: 1; } }
   @keyframes gpulse { 0%,100%{opacity:1} 50%{opacity:.35} }
   @media (prefers-reduced-motion: reduce) {
-    :global(html.js) .c-line, :global(html.js) .c-next, :global(html.js) .ga-fill { stroke-dashoffset: 0; }
+    :global(html.js) .c-line, :global(html.js) .c-next { stroke-dashoffset: 0; }
+    :global(html.js) .ga-fill { stroke-dashoffset: 0.13; }  /* rest at 87%, not full */
+    :global(html.js) .ga-threads .th { transform: scaleY(1); background: var(--ember); }
     :global(html.js) .c-area, :global(html.js) .c-cone, :global(html.js) .c-dot, :global(html.js) .c-note,
     :global(html.js) .c-read, :global(html.js) .c-now, :global(html.js) .c-nowlab,
     :global(html.js) .c-nextdot, :global(html.js) .ga-num { opacity: 1; }
