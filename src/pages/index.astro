@@ -18,6 +18,15 @@ const socials = activeSocials();
     <section class="hero" data-section id="reserve">
       <div class="hero-in" data-r>
         <a href="/" class="hero-eye" data-eye aria-label="Angel0x1"><Mark size={104} reactive={true} /></a>
+        {socials.length > 0 && (
+          <div class="hero-socials">
+            {socials.map((s) => (
+              <a class="hero-ic" href={s.href} target="_blank" rel="me noopener" aria-label={s.label}>
+                <SocialIcon name={s.key} size={19} />
+              </a>
+            ))}
+          </div>
+        )}
         <p class="mono label hero-eyebrow">The journal that reads you forward</p>
         <h1 class="hero-say">It studies what you&#8217;ve written<br/>and tells you where you&#8217;re going.</h1>
 
@@ -299,7 +308,13 @@ const socials = activeSocials();
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: clamp(40px,8vh,90px) var(--gutter); position: relative; }
   .hero-in { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 620px; }
-  .hero-eye { display: block; margin-bottom: 26px; filter: drop-shadow(0 14px 26px rgba(23,21,15,0.16)); }
+  .hero-eye { display: block; margin-bottom: 18px; filter: drop-shadow(0 14px 26px rgba(23,21,15,0.16)); }
+  /* socials directly under the main logo */
+  .hero-socials { display: flex; gap: 10px; justify-content: center; margin-bottom: 26px; }
+  .hero-ic { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+    border: 1px solid var(--line); color: var(--ink-soft); border-radius: 999px;
+    transition: color .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease); }
+  .hero-ic:hover { color: var(--ember); border-color: var(--ember); transform: translateY(-2px); }
   .hero-eyebrow { color: var(--bone-soft); }
   .hero-say { font-family: var(--confess); font-weight: 300; font-size: clamp(26px,3.6vw,46px);
     line-height: 1.12; letter-spacing: -0.025em; color: var(--ink); margin: 12px 0 clamp(28px,4vh,40px); }
