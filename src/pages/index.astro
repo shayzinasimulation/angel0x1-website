@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Mark from '../components/Mark.astro';
+import SocialIcon from '../components/SocialIcon.astro';
 import { SITE, activeSocials } from '../config/site.ts';
 const socials = activeSocials();
 ---
@@ -139,6 +140,22 @@ const socials = activeSocials();
             <span class="th"></span><span class="th"></span>
           </div>
           <p class="mono ga-cap">142 entries &#183; 6 months &#183; all of it on your phone</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░ FOLLOW — socials, highlighted mid-page ░ -->
+    <section class="row row--follow" data-section>
+      <div class="cell cell--follow" data-r>
+        <p class="mono label follow-label">Follow the build</p>
+        <p class="follow-say confess">Launch day drops here first. Come watch it get made.</p>
+        <div class="follow-links">
+          {socials.map((s) => (
+            <a class="follow-ic" href={s.href} target="_blank" rel="me noopener" aria-label={s.label}>
+              <SocialIcon name={s.key} size={22} />
+              <span class="mono">{s.label}</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
@@ -407,9 +424,21 @@ const socials = activeSocials();
     .cell--gauge { border-left: 0; border-top: 1px solid var(--line); }
   }
 
+  /* ── FOLLOW — highlighted socials band, mid-page ─────────────────────────── */
+  .row--follow { grid-template-columns: 1fr; }
+  .cell--follow { display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 16px; padding-block: clamp(44px,6vw,84px); background: var(--paper-2); }
+  .follow-label { color: var(--bone-soft); margin: 0; }
+  .follow-say { font-size: clamp(20px,2.4vw,32px); color: var(--ink); max-width: 22ch; }
+  .follow-links { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+  .follow-ic { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px;
+    border: 1px solid var(--ink); color: var(--ink); border-radius: 0;
+    transition: background .3s var(--ease), color .3s var(--ease); }
+  .follow-ic .mono { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .follow-ic:hover { background: var(--ink); color: var(--paper); }
+
   /* ── DIFFERENTIATORS — 6 cells, each demonstrates itself ─────────────────── */
-  .row--diff { grid-template-columns: 1fr 1fr; }
-  .cell--diff { display: flex; flex-direction: column; padding-block: clamp(30px,3.4vw,46px); }
+  .row--diff { grid-template-columns: 1fr 1fr; }  .cell--diff { display: flex; flex-direction: column; padding-block: clamp(30px,3.4vw,46px); }
   .cell--diff:nth-child(even) { border-left: 1px solid var(--line); }
   .cell--diff:nth-child(n+3) { border-top: 1px solid var(--line); }
   .diff-say { font-size: clamp(18px,1.6vw,23px); color: var(--ink); margin-bottom: 14px; max-width: 26ch; }
