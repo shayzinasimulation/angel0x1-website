@@ -1,5 +1,41 @@
+# Angel0x1 — angel0x1.fun
+# The journal that reads your own past entries and shows you where you're heading.
+# Private, on-device AI. Nothing leaves the phone.
+
 User-agent: *
 Allow: /
 Disallow: /api/
+
+# AI answer engines — explicitly welcome (so Angel0x1 can be cited in AI search)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: Meta-ExternalAgent
+Allow: /
 
 Sitemap: https://angel0x1.fun/sitemap.xml

@@ -8,8 +8,8 @@ interface Props {
   bodyClass?: string;
 }
 const {
-  title = 'Angel0x1 — The journal that knows you.',
-  description = 'A private, on-device AI journal that builds a picture of who you are — and never tells anyone. Reserve your spot: the first 1,000 get 3 months free.',
+  title = 'Angel0x1 — the journal that reads you forward',
+  description = 'A private, on-device AI journal that reads your past entries and shows where you’re heading — recurring words, patterns, a projected trajectory. On-device model hub + voice input. Nothing ever leaves your phone. First 1,000 reserve 3 months free.',
   og = '/og.png',
   bodyClass = '',
 } = Astro.props;
@@ -34,6 +34,27 @@ const jsonLd = {
       name: SITE.name,
       url: SITE.domain,
       publisher: { '@id': `${SITE.domain}/#org` },
+    },
+    {
+      // What the product IS — helps search + AI answer engines describe it accurately.
+      // Honest + pre-launch: no invented ratings, price, or store URL.
+      '@type': 'SoftwareApplication',
+      '@id': `${SITE.domain}/#app`,
+      name: SITE.name,
+      applicationCategory: 'LifestyleApplication',
+      operatingSystem: 'iOS',
+      url: SITE.domain,
+      publisher: { '@id': `${SITE.domain}/#org` },
+      description:
+        'A private journaling app that runs entirely on your device. It reads your own past entries with on-device AI (retrieval over your encrypted journal) to surface recurring words, reflections, and a projected trajectory of where you’re heading. Includes a local model hub and on-device voice input. Entries are encrypted with AES-256-GCM and never leave the phone.',
+      featureList: [
+        'Predictive reading of your own past journal entries (on-device RAG)',
+        'Finds recurring words, themes, and reflections across months',
+        'Local model hub — choose from multiple on-device models',
+        'On-device voice input, transcribed locally',
+        'AES-256-GCM encryption; nothing is sent to any server',
+      ],
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'First 1,000 who reserve get 3 months free at launch' },
     },
   ],
 };
