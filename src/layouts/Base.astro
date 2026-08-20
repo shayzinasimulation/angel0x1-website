@@ -3,12 +3,16 @@ import '../styles/global.css';
 import { SITE, activeSocials } from '../config/site.ts';
 interface Props {
   title?: string;
+  ogTitle?: string;
   description?: string;
   og?: string;
   bodyClass?: string;
 }
 const {
-  title = 'Angel0x1 — the journal that reads you forward',
+  // <title> = the browser tab. Short + brand-first by request ("Angel0x1").
+  title = 'Angel0x1',
+  // og/twitter title stays descriptive for share cards + search snippets.
+  ogTitle = 'Angel0x1 — the journal that reads you forward',
   description = 'A private, on-device AI journal that reads your past entries and shows where you’re heading — recurring words, patterns, a projected trajectory. On-device model hub + voice input. Nothing ever leaves your phone. First 1,000 reserve 1 month free.',
   og = '/og.png',
   bodyClass = '',
@@ -73,7 +77,7 @@ const jsonLd = {
     <!-- Open Graph (absolute URLs; 1200×630 card) -->
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_US" />
@@ -87,7 +91,7 @@ const jsonLd = {
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@angel0x1_" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
